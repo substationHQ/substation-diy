@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Quicksand&display=swap');
+
+/* styles */
+/* called by your view template */
+html, body {
+  min-height:100%;
+}
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+body {
+  height:100%;
+  background-color:rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgb(223, 241, 255) 0%, rgb(255, 255, 255) 33%);
+  font-size: 16px;
+  font-family:'Open Sans','helvetica neue',helvetica,arial,sans-serif;
+}
+
+h1,h2 {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
+}
+
+h1 {
+  text-transform:uppercase;
+  font-weight:bold;
+  color:rgb(0, 158, 221);
+}
+
+h2 {
+  font-weight:light;
+  color: rgb(0, 180, 235);
+}
+
+ul {
+  list-style-type: none;
+  color: rgb(235, 219, 0);
+}
+
+li {
+  padding-left: 20px;
+}
+
+li .logo {
+  margin-right:0.75em;
+}
+
+li span {
+  color:rgba(85,102,119,1);
+  font-weight:400;
+}
+
+li:before {
+  content: '⫻';
+  font-size:1.25em;
+  margin-left: -20px;
+  margin-right: 10px;
+}
+
+
+/* unsubscribe  */
+
+#unsubscribe-form-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#unsubscribeForm {
+  display: flex; 
+  justify-content: space-between
+}
+
+#unsubscribeForm input {
+  height: 48px;
+}
+
+#unsubscribeForm input[type=submit] {
+  width:40% !important;
+}
+
+#unsubscribeForm input[type=email] {
+  color:#222;
+  width:57% !important;
+}
+
+
+/* form elements */
+
+form {
+  margin-bottom: 25px;
+  padding: 15px 0 15px 0;
+  display: inline-block;
+  font-weight:200;
+  width: 100%;
+}
+
+/*
+input[type=text] {
+  font-family: system-ui;
+  font-weight: 400;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(40, 44, 55);
+}
+*/
+  
+a.button, button, input[type=submit] {
+  font-size: 12px;
+  line-height:16px;
+  background-color: mediumseagreen;
+  width:100%;
+  border: none;
+  padding: 16px;
+  height: 48px;
+  color: #fff;
+  text-transform:uppercase;
+  cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+a.button:hover, button:hover, input[type=submit]:hover {
+  color:black;
+  background-color: rgb(235, 219, 0);
+}
+
+
+/* hero */
+.hero {
+  padding: 10% 0 5% 0;
+}
+
+.logo {
+  font-size:1.25em;
+  margin-right:0.15em;
+  color:rgb(235, 219, 0);
+}
+
+
+/*subscription widget*/
+
+.subscription-widget {
+  background-color:#fff;
+  box-shadow: 0px 0px 1.2em rgba(0,0,0,0.3);
+  margin-bottom:3em;
+  border-radius: 9px;
+  overflow:hidden;
+}
+
+.checkout-button {
+  display: flex;
+  padding: 16px;
+  position:relative;
+  justify-content:space-between;
+}
+
+.checkout-button input {
+  line-height:16px;
+  min-width:7em;
+  flex-basis:40%;
+  padding:1rem 1rem 1rem 2rem;
+  height:48px;
+  position:relative;
+}
+.checkout-button::before {
+  content:'$';
+  display:block;
+  height: 48px;
+  z-index:10;
+  color: #666;
+  line-height:16px;
+  padding:16px 0 0;
+  background:transparent;
+  position: absolute;
+  top:16px;
+  left:1.5em;
+}
+
+.checkout-button button {
+  height:48px;
+  flex-basis:55%;
+  transition:all 0.2s ease;
+}
+.checkout-button input:focus {
+  box-shadow: 0 0 8px rgba(100,193,235,0.5);
+}
+
+.fine-print {
+  background: rgba(85,102,119,1);
+  padding: 16px;
+  font-size: 12px;
+  line-height: 14px;
+  color:#ccc;
+}
+
+/* checkout */
+.vv-overlay {
+  background: rgba(31,31,41, 0.95) !important;
+}
+#braintree-token-form input#button-pay.show-button {
+  background: mediumseagreen !important;
+  cursor:pointer;
+}
+#braintree-token-form input#button-pay.show-button:hover {
+  background: yellow !important;
+  color: black;
+}
+#braintree-token-form input#button-pay[disabled] {
+  background: #666 !important;
+  color: #999;
+  cursor: auto;
+}
+
+
+/* admin dashboard */
+#admin-login input[type=email] {
+  width: 100%;
+  height: 48px;
+}
+
+
+/* Smaller than 400 */
+@media (max-width: 400px) {
+  .checkout-button {
+    flex-wrap:wrap;
+  }
+  .checkout-button input,
+  .checkout-button button {
+    flex-basis:100%;
+    width:100%;
+    clear: both;
+  }
+}
+
+@media (min-width:651px) {
+  
+  #site-title {
+    margin-left:-.85em;
+  }
+}
+
+@media (min-width:651px) and (max-width:960px) {
+
+  .checkout-button {
+    flex-wrap:wrap;
+  }
+  .checkout-button input,
+  .checkout-button button {
+    flex-basis:100%;
+    width:100%;
+    clear: both;
+  }
+}
+
+
+@media (min-width:961px) {
+  
+  .checkout-button input {
+    flex-basis:40%;
+  }
+
+  .checkout-button button {
+    flex-basis:55%;
+  }
+}

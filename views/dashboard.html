@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{copy.title}}</title>
+  <meta name="description" content="{{copy.description}}">
+  <meta name="author" content="@jessevondoom">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" type="text/css" href="/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/skeleton.css">
+  <link rel="stylesheet" type="text/css" href="/custom.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="https://cdn.glitch.com/ae8fe322-3d99-45d4-b293-37c0791f3234%2Flodge.png">
+  
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+  <div class="section hero">
+    <div class="container">
+      <div class="row">
+        <h1 id="site-title"><span class="logo">⫻</span>{{copy.title}}</h1>
+        <h2>Dashboard</h2>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section more">
+    <div class="container">
+      <div class="row">
+        <div class="five columns">
+          {{#showadmin}}
+            <p>
+              More management tasks coming soon, but for now just push the button below to export your
+              full list of active subscribers. This export is a real-time list of everyone active, so
+              you'll want to re-export every time you intend on looking at a currrent list of 
+              subscribers.
+            </p>
+            <a href="/export" class="button">Export subscribers as CSV</a>
+          {{/showadmin}}
+          {{^showadmin}}
+            {{^postsend}}
+              <form id="admin-login" action="/dashboard" method="GET">
+                <input type="email" placeholder="admin@email.com" name="email">
+                <input type="submit" value="Log in now" />
+              </form>
+            {{/postsend}}
+            {{#postsend}}
+              <p>
+                Check your inbox. We just sent a secure single-use link to your dashboard.
+              </p>
+            {{/postsend}}
+          {{/showadmin}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  
+</body>
+</html>
