@@ -18,7 +18,8 @@
     "sequelize": "^6.0.0",
     "sqlite3": "^4.0.8",
     "mailgun-js": "^0.22.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "lodash": "^4.17.13"
   },
   "engines": {
     "node": "8.x"
