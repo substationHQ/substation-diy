@@ -11,6 +11,7 @@ body {
   height:100%;
   background-color:rgb(255, 255, 255);
   background: linear-gradient(0deg, rgb(223, 241, 255) 0%, rgb(255, 255, 255) 33%);
+  background-attachment: fixed;
   font-size: 16px;
   font-family:'Open Sans','helvetica neue',helvetica,arial,sans-serif;
 }
@@ -48,11 +49,35 @@ li span {
   font-weight:400;
 }
 
-li:before {
+.more li:before {
   content: '⫻';
   font-size:1.25em;
   margin-left: -20px;
   margin-right: 10px;
+}
+
+.footer li {
+  line-height: 24px;
+  padding-left: 0;
+}
+
+.footer li span {
+  display: inline-block;
+  position: relative;
+  top: 9px;
+  margin-right: 0.5em;
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  border-radius: 12px;
+}
+
+.footer li span.twitter {
+  background-image: url(https://abs.twimg.com/responsive-web/web/icon-ios.8ea219d08eafdfa44.png);
+}
+
+.footer li span.github {
+  background-image: url(https://github.githubassets.com/pinned-octocat.svg);
 }
 
 
@@ -139,6 +164,12 @@ a.button:hover, button:hover, input[type=submit]:hover {
   color:rgb(235, 219, 0);
 }
 
+
+/* footer */
+.footer {
+  padding: 6% 0 3% 0;
+  font-size:0.8em;
+}
 
 /*subscription widget*/
 
