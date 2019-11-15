@@ -14,9 +14,11 @@ var braintree = require("braintree");
 var mailgen = require('mailgen');
 var mailgun = require("mailgun-js");
 var mustacheExpress = require('mustache-express');
-var Sequelize = require('sequelize');
-var Op = Sequelize.Op;
+var sqlite3 = require('sqlite3').verbose();
 var uuid = require('uuid/v1');
+
+var mg = false;
+var mailGenerator = false;
 
 // instantiate express and do settings
 var app = express();
@@ -61,19 +63,6 @@ var gateway = braintree.connect({
   privateKey: process.env.BRAINTREE_PRIVATE_KEY
 });
 
-// set up mailgun
-var mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
-
-// set up mailgen (email templating)
-var mailGenerator = new mailgen({
-    theme: 'salted',
-    product: {
-        // Appears in header & footer of e-mails
-        name: process.env.TITLE,
-        link: process.env.URL
-    }
-});
-
 /*********************************************************************
  *
  * DATABASE SETUP
@@ -87,46 +76,41 @@ var mailGenerator = new mailgen({
  * request and it will set itself up again.
  *
  *********************************************************************/
-const sequelize = new Sequelize({
-  host: '0.0.0.0',
-  dialect: 'sqlite',
-  pool: {
-    max: 5,
-    min: 0,
-    idle: 10000
-  },
-  storage: '.data/database.sqlite'
-});
+var dbFile = './.data/sqlite.db';
+var exists = fs.existsSync(dbFile);
+var db = new sqlite3.Database(dbFile);
 
-// create an object for our nonces table
-var Nonces;
-// authenticate with the database
-sequelize.authenticate()
-  .then(function(err) {
-    console.log('Connection has been established successfully.');
-    // define a new table 'nonces'
-    Nonces = sequelize.define('nonces', {
-      email: {
-        type: Sequelize.STRING
-      },
-      nonce: {
-        type: Sequelize.STRING
-      }
-    });
+// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
+db.serialize(function(){
+  if (!exists) {
+    db.run('CREATE TABLE Nonces (email TEXT, nonce TEXT, created datetime default current_timestamp)');
+    console.log('SQLite database initialized, Nonces table created.');
     
-    Nonces.sync();
-  
     /*
-    // Find all nonces (quickie test, saving for reference)
-    Nonces.findAll().then(nonces => {
-      console.log("All nonces:", JSON.stringify(nonces, null, 4));
+    // UNCOMMENT FOR TESTING ONLY
+    // Attempt a test write to the new database
+    db.serialize(function() {
+      db.run('INSERT INTO Nonces (email, nonce) VALUES ("testemail","testnonce")');
     });
     */
-  }) 
-  .catch(function (err) {
-    console.log('Unable to connect to the database: ', err);
-  });
 
+  }
+  else {
+    console.log('SQLite database ready.');
+    
+    /*
+    // UNCOMMENT FOR TESTING ONLY
+    // Validate the test write and database persistence
+    db.each('SELECT * from Nonces', function(err, row) {
+      if ( row ) {
+        // loop through
+        console.log('record:', row);
+      }
+    });
+    */
+    
+  }
+});
 
 
 /*********************************************************************
@@ -142,24 +126,34 @@ app.get("/", function(request, response) {
   //
   // TODO: handle the error case already. Damn.
   gateway.clientToken.generate({version:3}, function (err, res) {
-    var details = {
-      "braintree":{
-        "clientToken":res.clientToken,
-        "planId":process.env.BRAINTREE_PLAN_ID,
-        "minimumCost":process.env.BRAINTREE_MINIMUM_COST
-      },
-      "copy":{
-        "title":process.env.TITLE,
-        "description":process.env.DESCRIPTION
-      },
-      "style": {
-        "titleColor":process.env.STYLE_TITLE_COLOR,
-        "textColor":process.env.STYLE_TEXT_COLOR,
-        "backgroundColor":process.env.STYLE_BACKGROUND_COLOR,
-        "backgroundImage":process.env.STYLE_BACKGROUND_IMAGE
+    if (err) {
+      console.log(err);
+    } else {
+      //console.log(res);
+      var sandboxed = false;
+      if (process.env.BRAINTREE_ENVIRONMENT == "Sandbox") {
+        sandboxed = true;
+      }
+      var details = {
+        "braintree":{
+          "clientToken":res.clientToken,
+          "planId":process.env.BRAINTREE_PLAN_ID,
+          "minimumCost":process.env.BRAINTREE_MINIMUM_COST
+        },
+        "copy":{
+          "title":process.env.TITLE,
+          "description":process.env.DESCRIPTION
+        },
+        "style": {
+          "titleColor":process.env.STYLE_TITLE_COLOR,
+          "textColor":process.env.STYLE_TEXT_COLOR,
+          "backgroundColor":process.env.STYLE_BACKGROUND_COLOR,
+          "backgroundImage":process.env.STYLE_BACKGROUND_IMAGE
+        },
+        "sandboxed":sandboxed
       }
     }
-    response.render('index', details);
+    response.render('index', details); 
   });
 });
 
@@ -193,36 +187,33 @@ app.get("/dashboard", function(request, response) {
   if (request.session.administrator) {
     request.details.showadmin = true;
   } else {
-  if (request.query.email == process.env.ADMIN_EMAIL) {
-    if (request.query.nonce) {
-      // returning from a login email
-      // console.log('trying verification on return trip');
-      console.log(request.query.email + ' ' + request.query.nonce);
-      if(validateNonce(process.env.ADMIN_EMAIL,request.query.nonce)) {
-        // make adminSessionSet true however tf you do that 
-        request.session.administrator = true;
-        request.details.showadmin = true;
+    if (request.query.email == process.env.ADMIN_EMAIL) {
+      if (request.query.nonce) {
+        // returning from a login email
+        // console.log('trying verification on return trip');
+        console.log('admin login attempt: ' + request.query.email + ' ' + request.query.nonce);
+        var isvalid = validateNonce(process.env.ADMIN_EMAIL,request.query.nonce);
+        console.log('validation: ' + isvalid);
+        if(isvalid) {
+          request.session.administrator = true;
+          request.details.showadmin = true;
+        }
+      } else {
+        // requesting a login — send a link
+        sendToken(
+          process.env.ADMIN_EMAIL,
+          'Log in link for ' + process.env.TITLE,
+          'Here you go.',
+          'To log in just gollow this link. It\'s a one-time link like a password reset, but you never have to worry about a password.',
+          'Log in now',
+          process.env.URL + 'dashboard'
+        );
+        request.details.postsend = true;
       }
-    } else {
-      // requesting a login — send a link
-      sendToken(
-        process.env.ADMIN_EMAIL,
-        'Log in link for ' + process.env.TITLE,
-        'Here you go.',
-        'To log in just gollow this link. It\'s a one-time link like a password reset, but you never have to worry about a password.',
-        'Log in now',
-        process.env.URL + 'dashboard'
-      );
-      request.details.postsend = true;
     }
   }
-}
 
-if (request.details.showadmin) {
-  showActiveSubscribers(request,response,'dashboard');
-} else {
   response.render('dashboard', request.details);
-}
 });
 
 // return from unsubscribe request
@@ -399,31 +390,27 @@ app.post("/unsubscribe", function (request, response) {
  * Pretty much just some junk to validate nonces
  *
  *********************************************************************/
-function validateNonce(email,nonce) {
-  var valid = Nonces.count({
-    where: {
-      email: email,
-      nonce: nonce,
-      createdAt: {
-        [Op.gt]: new Date(Date.now() - (24 * 60 * 60 * 1000)),
-      }
+async function validateNonce(email,nonce) {
+  var valid = false;
+  // get a row count for email+nonce+datetime (1 = valid, 0 = not valid)
+  await db.get('SELECT Count(*) as count from Nonces WHERE email = "'+email+'" AND nonce = "'+nonce+'" AND created > datetime("now","-24 hours")', function(err, row) {
+    if(row.count) {
+      valid = true;
     }
+    // clean up old rows
+    db.run('DELETE FROM Nonces WHERE email = "'+email+'"');
+    // return the result
   });
-  Nonces.destroy({
-    where: {
-      email: email
-    }
-  });
-  if (valid) {
-    return true;
-  } else {
-    return false;
-  }
+  return valid;
 }
 
 function sendToken(emailaddress,subject,intro,instructions,buttontext,url) {
   var nonce = uuid();
-  Nonces.create({ email: emailaddress, nonce: nonce});
+  db.serialize(function() {
+    db.run('INSERT INTO Nonces (email, nonce) VALUES ("'+emailaddress+'","'+nonce+'")');
+  });
+  
+  prepMailing();
   
   // prep the outgoing email
   var email = {
@@ -494,6 +481,21 @@ function showActiveSubscribers(request,response,template) {
         }
       });
     }
+  });
+}
+
+function prepMailing() {
+  // set up mailgun
+  mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
+
+  // set up mailgen (email templating)
+  mailGenerator = new mailgen({
+      theme: 'salted',
+      product: {
+          // Appears in header & footer of e-mails
+          name: process.env.TITLE,
+          link: process.env.URL
+      }
   });
 }
 

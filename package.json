@@ -3,34 +3,34 @@
   "//2": "https://docs.npmjs.com/files/package.json",
   "//3": "updating this file will download and update your packages",
   "name": "substation",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "A simple subscription app that uses Braintree + Mailgun to create fan club subscriptions.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "braintree": "^2.18.0",
+    "body-parser": "^1.19.0",
+    "braintree": "^2.21.0",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
-    "mailgen": "^2.0.7",
-    "mustache-express": "^1.2.8",
-    "sequelize": "^6.0.0",
-    "sqlite3": "^4.0.8",
+    "mailgen": "^2.0.10",
+    "mustache-express": "^1.3.0",
+    "sqlite3": "^4.1.0",
     "mailgun-js": "^0.22.0",
-    "uuid": "^3.3.2",
-    "lodash": "^4.17.13"
+    "uuid": "^3.3.3"
   },
   "engines": {
     "node": "8.x"
   },
   "repository": {
-    "url": "https://glitch.com/edit/#!/hello-sqlite"
+    "url": "https://glitch.com/edit/#!/substation"
   },
   "license": "MIT",
   "keywords": [
     "node",
-    "glitch",
-    "express"
+    "express",
+    "subscription",
+    "braintree"
   ]
 }
