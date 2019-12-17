@@ -6,7 +6,7 @@ dependencies:
   mailgen: 2.0.10
   mailgun-js: 0.22.0
   mustache-express: 1.3.0
-  sqlite3: 4.1.0
+  sqlite3: 4.1.1
   uuid: 3.3.3
 packages:
   /@braintree/wrap-promise/2.0.0:
@@ -45,7 +45,7 @@ packages:
   /ajv/6.10.2:
     dependencies:
       fast-deep-equal: 2.0.1
-      fast-json-stable-stringify: 2.0.0
+      fast-json-stable-stringify: 2.1.0
       json-schema-traverse: 0.4.1
       uri-js: 4.2.2
     dev: false
@@ -122,10 +122,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
-  /aws4/1.8.0:
+  /aws4/1.9.0:
     dev: false
     resolution:
-      integrity: sha512-ReZxvNHIOv88FlT7rxcXIIC0fPt4KZqZbOlivyWtXLt8ESx84zd3kMC6iK5jVeS2qt+g7ftS7ye4fi06X5rtRQ==
+      integrity: sha512-Uvq6hVe90D0B2WEnUqtdgY1bATGz3mw33nH9Y+dmA+w5DHvUmBgkr5rM/KCHpCsiFNRUfokW/szpPPgMK2hm4A==
   /balanced-match/1.0.0:
     dev: false
     resolution:
@@ -631,10 +631,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
-  /fast-json-stable-stringify/2.0.0:
+  /fast-json-stable-stringify/2.1.0:
     dev: false
     resolution:
-      integrity: sha1-1RQsDK7msRifh9OnYREGT4bIu/I=
+      integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==
   /fast-levenshtein/2.0.6:
     dev: false
     resolution:
@@ -1228,7 +1228,7 @@ packages:
       mkdirp: 0.5.1
       needle: 2.4.0
       nopt: 4.0.1
-      npm-packlist: 1.4.6
+      npm-packlist: 1.4.7
       npmlog: 4.1.2
       rc: 1.2.8
       rimraf: 2.7.1
@@ -1246,17 +1246,23 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-0NRoWv1UFRk8jHUFYC0NF81kR00=
-  /npm-bundled/1.0.6:
+  /npm-bundled/1.1.1:
+    dependencies:
+      npm-normalize-package-bin: 1.0.1
     dev: false
     resolution:
-      integrity: sha512-8/JCaftHwbd//k6y2rEWp6k1wxVfpFzB6t1p825+cUb7Ym2XQfhwIC5KwhrvzZRJu+LtDE585zVaS32+CGtf0g==
-  /npm-packlist/1.4.6:
+      integrity: sha512-gqkfgGePhTpAEgUsGEgcq1rqPXA+tv/aVBlgEzfXwA1yiUJF7xtEt3CtVwOjNYQOVknDk0F20w58Fnm3EtG0fA==
+  /npm-normalize-package-bin/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-EPfafl6JL5/rU+ot6P3gRSCpPDW5VmIzX959Ob1+ySFUuuYHWHekXpwdUZcKP5C+DS4GEtdJluwBjnsNDl+fSA==
+  /npm-packlist/1.4.7:
     dependencies:
       ignore-walk: 3.0.3
-      npm-bundled: 1.0.6
+      npm-bundled: 1.1.1
     dev: false
     resolution:
-      integrity: sha512-u65uQdb+qwtGvEJh/DgQgW1Xg7sqeNbmxYyrvlNznaVTjV3E5P6F/EFjM+BVHXl7JJlsdG8A64M0XI8FI/IOlg==
+      integrity: sha512-vAj7dIkp5NhieaGZxBJB8fF4R0078rqsmhJcAfXZ6O7JJhjhPK96n5Ry1oZcfLXgfun0GWTZPOxaEyqv8GBykQ==
   /npmlog/4.1.2:
     dependencies:
       are-we-there-yet: 1.1.5
@@ -1441,10 +1447,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
-  /psl/1.4.0:
+  /psl/1.6.0:
     dev: false
     resolution:
-      integrity: sha512-HZzqCGPecFLyoRj5HLfuDSKYTJkAfB5thKBIkRHtGjWwY7p1dAyveIbXIq4tO0KYfDF2tHqPUgY9SDnGm00uFw==
+      integrity: sha512-SYKKmVel98NCOYXpkwUqZqh0ahZeeKfmisiLIcEZdsb+WbLv02g/dI5BUmZnIyOe7RzZtLax81nnb2HbvC2tzA==
   /punycode/1.4.1:
     dev: false
     resolution:
@@ -1554,7 +1560,7 @@ packages:
   /request/2.88.0:
     dependencies:
       aws-sign2: 0.7.0
-      aws4: 1.8.0
+      aws4: 1.9.0
       caseless: 0.12.0
       combined-stream: 1.0.8
       extend: 3.0.2
@@ -1705,7 +1711,7 @@ packages:
     optional: true
     resolution:
       integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
-  /sqlite3/4.1.0:
+  /sqlite3/4.1.1:
     dependencies:
       nan: 2.14.0
       node-pre-gyp: 0.11.0
@@ -1713,7 +1719,7 @@ packages:
     dev: false
     requiresBuild: true
     resolution:
-      integrity: sha512-RvqoKxq+8pDHsJo7aXxsFR18i+dU2Wp5o12qAJOV5LNcDt+fgJsc2QKKg3sIRfXrN9ZjzY1T7SNe/DFVqAXjaw==
+      integrity: sha512-CvT5XY+MWnn0HkbwVKJAyWEMfzpAPwnTiB3TobA5Mri44SrTovmmh499NPQP+gatkeOipqPlBLel7rn4E/PCQg==
   /sshpk/1.16.1:
     dependencies:
       asn1: 0.2.4
@@ -1828,7 +1834,7 @@ packages:
       integrity: sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
   /tough-cookie/2.4.3:
     dependencies:
-      psl: 1.4.0
+      psl: 1.6.0
       punycode: 1.4.1
     dev: false
     engines:
@@ -2000,10 +2006,10 @@ shrinkwrapVersion: 3
 specifiers:
   body-parser: ^1.19.0
   braintree: ^2.21.0
-  express: ^4.16.4
+  express: ^4.17.1
   express-session: ^1.16.1
   mailgen: ^2.0.10
   mailgun-js: ^0.22.0
   mustache-express: ^1.3.0
-  sqlite3: ^4.1.0
+  sqlite3: ^4.1.1
   uuid: ^3.3.3
