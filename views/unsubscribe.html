@@ -38,9 +38,9 @@
           {{#showgoodbye}}
             We're sorry to see you go.
           {{/showgoodbye}}
-          {{#showerror}}
+          {{^showgoodbye}}
             Something went wrong.
-          {{/showerror}}
+          {{/showgoodbye}}
         </h2>
         <p>
           {{#showgoodbye}}
@@ -50,9 +50,9 @@
             <br /><br />
             Thank you for your support.
           {{/showgoodbye}}
-          {{#showerror}}
+          {{^showgoodbye}}
             Please make sure you used the same email address that you signed up with and try again.
-          {{/showerror}}
+          {{/showgoodbye}}
         </p>
       </div>
     </div>

@@ -58,6 +58,11 @@
                 <input type="number" id="input-price" value="{{braintree.minimumCost}}">
                 <button id="checkout">Subscribe: $<span id="checkout-price">{{braintree.minimumCost}}</span>/mo</button>
               </div>
+              {{#sandboxed}}
+              <div class="sandbox-mode">
+                <b>SANDBOX MODE.</b> Accepting <a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/node">test cards</a> only, no real currency.
+              </div>
+              {{/sandboxed}}
               <div class="fine-print">
                 By signing up you are agreeing to recurring payments. You are free to <a href="#" id="cancelLink">cancel</a> any time.
               </div>
@@ -77,12 +82,13 @@
             <li><span class="github"></span><a href="https://github.com/substation-me/">github.com/substation-me</a></li>
           </ul>
         </div>
-        <div class="eight columns">
+        <div class="eight columns remix">
+          <h3><span class="glitch"></span>Remix on Glitch</h3> 
           <p>
-            <b>Make it yours.</b> This whole project can be cloned and remixed on Glitch.
-            <a href="https://glitch.com/edit/#!/substation">Just click here to get started.</a> You'll 
-            need a Braintree account, a Mailgun account, and not much else — then you'll be 
-            running your own fan club, subscription, or community.
+            This page is just an example. Make Substation all your own, with free and easy hosting on Glitch. 
+            <a href="https://glitch.com/edit/#!/substation">Just click here to get started.</a> 
+            You'll need a Braintree account, a Mailgun account, and not much else — then you'll be running your own fan 
+            club, subscription, or community.
           </p><p>
             This page tests against a sandbox account with <a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/node">test card numbers</a>. Feel 
             free to kick the tires.
@@ -100,7 +106,7 @@
     var vv = window.lodge;
     // set our options for the checkout module
     var checkoutOptions = {
-      braintree: '{{braintree.clientToken}}',
+      braintree: '{{{braintree.clientToken}}}',
       recurring:true,
       endpoint:'/subscribe',
       successMsg:'Success. Your monthly payments are set up, and you should see a confirmation email shortly.',

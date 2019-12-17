@@ -16,7 +16,7 @@ body {
   font-family:'Open Sans','helvetica neue',helvetica,arial,sans-serif;
 }
 
-h1,h2 {
+h1,h2,h3 {
   font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
 }
 
@@ -26,9 +26,13 @@ h1 {
   color:rgb(0, 158, 221);
 }
 
-h2 {
+h2,h3 {
   font-weight:light;
   color: rgb(0, 180, 235);
+}
+
+h3 {
+  color: rgba(85,102,119,1);
 }
 
 ul {
@@ -78,6 +82,22 @@ li span {
 
 .footer li span.github {
   background-image: url(https://github.githubassets.com/pinned-octocat.svg);
+}
+
+span.glitch {
+  display: inline-block;
+  position: relative;
+  top: 8px;
+  margin-right: 8px;
+  width: 42px;
+  height: 42px;
+  background-size: cover;
+  border-radius: 21px;
+  background-image: url(https://cdn.glitch.com/38a30f29-aa18-44b4-a077-cecc038350a9%2Fglitched-glitch.png?v=1573670100233);
+}
+
+div.remix p {
+  padding-left:52px;
 }
 
 
@@ -219,12 +239,18 @@ a.button:hover, button:hover, input[type=submit]:hover {
   box-shadow: 0 0 8px rgba(100,193,235,0.5);
 }
 
-.fine-print {
+.fine-print, .sandbox-mode {
   background: rgba(85,102,119,1);
   padding: 16px;
   font-size: 12px;
   line-height: 14px;
   color:#ccc;
+}
+
+.sandbox-mode {
+  background: rgba(235,219,0,1);
+  padding: 8px 16px;
+  color:#222;
 }
 
 /* checkout */
