@@ -12,16 +12,16 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "braintree": "^2.21.0",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "express-session": "^1.16.1",
     "mailgen": "^2.0.10",
     "mustache-express": "^1.3.0",
-    "sqlite3": "^4.1.0",
+    "sqlite3": "^4.1.1",
     "mailgun-js": "^0.22.0",
     "uuid": "^3.3.3"
   },
   "engines": {
-    "node": "8.x"
+    "node": "12.13.1"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/substation"
