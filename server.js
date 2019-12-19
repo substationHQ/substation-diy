@@ -8,13 +8,11 @@
  *********************************************************************/
 var express = require("express");
 var session = require("express-session");
-var fs = require("fs");
 var bodyParser = require("body-parser");
 var braintree = require("braintree");
 var mailgen = require("mailgen");
 var mailgun = require("mailgun-js");
 var mustacheExpress = require("mustache-express");
-var sqlite3 = require("sqlite3").verbose();
 var uuid = require("uuid/v1");
 
 var mg = false;
@@ -63,53 +61,9 @@ var gateway = braintree.connect({
   privateKey: process.env.BRAINTREE_PRIVATE_KEY
 });
 
-/*********************************************************************
- *
- * DATABASE SETUP
- * The database is only used for issuing one-time nonce tokens to
- * verify a user either for login or for unsubscribe.
- *
- * Even if the server sleeps, the database persists. That said —
- * if it's lost it's not a tragedy for the app. All real data is
- * stored in Braintree, so should the database get blown away by
- * some server fluke a user needs only retry their login/unsubscribe
- * request and it will set itself up again.
- *
- *********************************************************************/
-var dbFile = "./.data/sqlite.db";
-var exists = fs.existsSync(dbFile);
-var db = new sqlite3.Database(dbFile);
+// load database initialization script
+var db = require('./database.js')
 
-// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
-db.serialize(function() {
-  if (!exists) {
-    db.run(
-      "CREATE TABLE Nonces (email TEXT, nonce TEXT, created datetime default current_timestamp)"
-    );
-    console.log("SQLite database initialized, Nonces table created.");
-
-    /*
-    // UNCOMMENT FOR TESTING ONLY
-    // Attempt a test write to the new database
-    db.serialize(function() {
-      db.run('INSERT INTO Nonces (email, nonce) VALUES ("testemail","testnonce")');
-    });
-    */
-  } else {
-    console.log("SQLite database ready.");
-
-    /*
-    // UNCOMMENT FOR TESTING ONLY
-    // Validate the test write and database persistence
-    db.each('SELECT * from Nonces', function(err, row) {
-      if ( row ) {
-        // loop through
-        console.log('record:', row);
-      }
-    });
-    */
-  }
-});
 
 /*********************************************************************
  *
@@ -132,7 +86,7 @@ app.get("/", function(request, response) {
       if (process.env.BRAINTREE_ENVIRONMENT == "Sandbox") {
         sandboxed = true;
       }
-      var details = {
+      request.details = {
         braintree: {
           clientToken: res.clientToken,
           planId: process.env.BRAINTREE_PLAN_ID,
@@ -151,7 +105,7 @@ app.get("/", function(request, response) {
         sandboxed: sandboxed
       };
     }
-    response.render("index", details);
+    response.render("index", request.details);
   });
 });
 
@@ -413,9 +367,13 @@ app.post("/unsubscribe", function(request, response) {
 /*********************************************************************
  *
  * GENERAL FUNCTIONS
- * Pretty much just some junk to validate nonces
+ * Pretty much just some junk to validate nonces or do mailings
  *
  *********************************************************************/
+function finalize() {
+  
+}
+
 function validateNonce(email, nonce, callback) {
   var isvalid = false;
   // get a row count for email+nonce+datetime (1 = valid, 0 = not valid)
