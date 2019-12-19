@@ -53,7 +53,7 @@ Misc details:
 
 Credits
 -------
-[@jessevondoom](https://twitter.com/jessevondoom)
+[@jessevondoom](https://twitter.com/jessevondoom), [@gmiddleb](https://github.com/gmiddleb)
 
 
 
