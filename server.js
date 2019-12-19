@@ -370,10 +370,6 @@ app.post("/unsubscribe", function(request, response) {
  * Pretty much just some junk to validate nonces or do mailings
  *
  *********************************************************************/
-function finalize() {
-  
-}
-
 function validateNonce(email, nonce, callback) {
   var isvalid = false;
   // get a row count for email+nonce+datetime (1 = valid, 0 = not valid)
