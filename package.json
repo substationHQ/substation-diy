@@ -7,7 +7,7 @@
   "description": "A simple subscription app that uses Braintree + Mailgun to create fan club subscriptions.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

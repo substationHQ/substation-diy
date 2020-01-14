@@ -12,7 +12,7 @@
  *
  *********************************************************************/
 var sqlite3 = require("sqlite3").verbose();
-var dbFile = "./.data/sqlite.db";
+var dbFile = __dirname + "/../.data/sqlite.db";
 
 let db = new sqlite3.Database(dbFile, sqlite3.OPEN_READWRITE, function(err) {
   if(err) {
