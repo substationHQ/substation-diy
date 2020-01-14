@@ -47,7 +47,7 @@ module.exports = function(app, db) {
     if (request.body.email) {
       var subscribers = require(__dirname + "/../models/subscribers.js");
       subscribers.add(
-        request.query.email,
+        request.body.email,
         request.body.firstName,
         request.body.lastName,
         request.body.nonce,
