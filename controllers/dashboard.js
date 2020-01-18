@@ -1,6 +1,7 @@
 module.exports = function(app, db) {
   // dashboard page:
   app.get("/dashboard", function(request, response) {
+    var users = require(__dirname + "/../models/users.js");
     request.details = {
       copy: {
         title: process.env.TITLE,
@@ -12,7 +13,7 @@ module.exports = function(app, db) {
       request.details.showadmin = true;
       response.render("dashboard", request.details);
     } else {
-      if (request.query.email == process.env.ADMIN_EMAIL) {
+      if (users.isAdmin(request.query.email)) {
         if (request.query.nonce) {
           // returning from a login email
           console.log("admin login attempt: " + request.query.nonce);
@@ -30,16 +31,18 @@ module.exports = function(app, db) {
           );
         } else {
           // requesting a login — send a link
-
           var mailer = require(__dirname + "/../utility/messaging.js");
-          mailer.sendToken(
+          
+          mailer.sendMessage(
+            app,
             process.env.ADMIN_EMAIL,
-            "Log in link for " + process.env.TITLE,
-            "Here you go.",
-            "To log in just follow this link. It's a one-time link like a password reset, but you never have to worry about a password.",
+            "Log in to " + process.env.TITLE,
+            "Just click to login.",
+            "login",
             "Log in now",
             process.env.URL + "dashboard"
           );
+          
           request.details.postsend = true;
           response.render("dashboard", request.details);
         }

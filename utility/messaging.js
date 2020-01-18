@@ -1,5 +1,5 @@
 var db = require(__dirname + "/database.js");
-var mailgen = require("mailgen");
+//var mailgen = require("mailgen");
 var mailgun = require("mailgun-js");
 
 // set up mailgun
@@ -8,26 +8,19 @@ var mg = mailgun({
   domain: process.env.MAILGUN_DOMAIN
 });
 
-// set up mailgen (email templating)
-var mailGenerator = new mailgen({
-  theme: "salted",
-  product: {
-    // Appears in header & footer of e-mails
-    name: process.env.TITLE,
-    link: process.env.URL
-  }
-});
 
 /*******************************************************************
  *
  * BEGIN FUNCTIONS
  *
  *******************************************************************/
-module.exports.sendToken = function(
+
+module.exports.sendMessage = function(
+  app,
   emailaddress,
   subject,
-  intro,
-  instructions,
+  title,
+  message,
   buttontext,
   url
 ) {
@@ -42,37 +35,58 @@ module.exports.sendToken = function(
         '")'
     );
   });
-
+  
+  var details = {
+    "title":title,
+    "copy":"",
+    "showbutton":true,
+    "button": {
+      "url":url + "?email=" + emailaddress + "&nonce=" + nonce,
+      "copy":buttontext
+    },
+    "env": {
+      "title":process.env.TITLE,
+      "url":process.env.URL
+    },
+    "unsubscribe":process.env.URL+'unsubscribe'
+  };
+  // cleanup to give a proper false to the email template for if statement
+  if (!url) {
+    details.showbutton = false;
+  }
+  
   // prep the outgoing email
-  var email = {
-    body: {
-      name: "",
-      intro: intro,
-      action: {
-        instructions: instructions,
-        button: {
-          color: "#22BC66", // Optional action button color
-          text: buttontext,
-          link: url + "?email=" + emailaddress + "&nonce=" + nonce
+  var fs = require('fs');
+  fs.readFile(__dirname + '/../data/messages/' + message + '.html', 'utf8', function(err, contents) {
+    if (contents) {
+      details.copy = contents;
+      app.render('email', details, function (err, html) {
+        if (err) {
+          console.log("messaging.sendTransactional: " + err);
+        } else {
+          // we're gonna need this in a second (to generate the plain text version)
+          var htmlToText = require('html-to-text');
+
+          var emailBody = html;
+          var emailText = htmlToText.fromString(html);
+
+          var emailData = {
+            from: process.env.MAILGUN_FROM_EMAIL,
+            to: emailaddress,
+            subject: subject,
+            text: emailText,
+            html: emailBody
+          };
+
+          mg.messages().send(emailData, function(err, body) {
+            if (err) {
+              console.log("There was an error sending email.");
+            }
+          });
         }
-      }
-    }
-  };
-  var emailBody = mailGenerator.generate(email); // html version of the email
-  var emailText = mailGenerator.generatePlaintext(email); // plain text version of the email
-
-  var data = {
-    from: process.env.MAILGUN_FROM_EMAIL,
-    to: emailaddress,
-    subject: subject,
-    text: emailText,
-    html: emailBody
-  };
-
-  mg.messages().send(data, function(error, body) {
-    if (error) {
-      console.log("There was an error sending email. Details:");
-      console.log(JSON.stringify(body));
+      });
+    } else {
+      console.log("messaging.sendTransactional: " + err);
     }
   });
 };

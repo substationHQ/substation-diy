@@ -26,3 +26,7 @@ module.exports.validateNonce = function(email, nonce, callback) {
     }
   );
 }
+
+module.exports.validateAPISecret = function(email, nonce, callback) {
+  
+}
