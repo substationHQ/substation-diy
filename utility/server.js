@@ -1,17 +1,23 @@
 var express = require("express");
 var session = require("express-session");
+var FileStore = require('session-file-store')(session);
 var bodyParser = require("body-parser");
 var mustacheExpress = require("mustache-express");
+
+var fileStoreOptions = {
+  "path":__dirname+"/../.data"
+};
 
 // instantiate express and do settings
 var app = express();
 app.use(
   session({
+    store: new FileStore(fileStoreOptions),
     secret: process.env.SECURITY_SECRET,
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: 360000
+      maxAge: 86400000
     }
   })
 );

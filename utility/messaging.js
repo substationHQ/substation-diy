@@ -57,7 +57,7 @@ module.exports.sendMessage = function(
   
   // prep the outgoing email
   var fs = require('fs');
-  fs.readFile(__dirname + '/../data/messages/' + message + '.html', 'utf8', function(err, contents) {
+  fs.readFile(__dirname + '/../views/messages/' + message + '.html', 'utf8', function(err, contents) {
     if (contents) {
       details.copy = contents;
       app.render('email', details, function (err, html) {
