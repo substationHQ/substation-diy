@@ -84,4 +84,22 @@ module.exports = function(app, db) {
       response.render("dashboard", request.details);
     }
   });
+  
+  // dashboard page:
+  app.get("/mailing", function(request, response) {
+    var users = require(__dirname + "/../models/users.js");
+    request.details = {
+      copy: {
+        title: process.env.TITLE,
+        description: process.env.DESCRIPTION
+      }
+    };
+    request.details.showadmin = false;
+    if (request.session.administrator) {
+      request.details.showadmin = true;
+      response.render("mailing", request.details);
+    } else {
+      response.render("mailing", request.details);
+    }
+  });
 };
