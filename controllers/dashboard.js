@@ -85,7 +85,7 @@ module.exports = function(app, db) {
     }
   });
   
-  // dashboard page:
+  // mailing page:
   app.get("/mailing", function(request, response) {
     var users = require(__dirname + "/../models/users.js");
     request.details = {
@@ -100,6 +100,30 @@ module.exports = function(app, db) {
       response.render("mailing", request.details);
     } else {
       response.render("mailing", request.details);
+    }
+  });
+  
+  // mailing action
+  app.post("/mailing", function(request, response) {
+    if (request.session.administrator) {
+      if (request.body.subject && request.body.contents) {
+        if (!request.body.sending) {
+          request.body.subject += ' [TEST]'; 
+        }
+        //console.log(request.body.subject + "\n\n" + request.body.contents);
+        var messaging = require(__dirname + "/../utility/messaging.js");
+        messaging.sendMailing(
+          app,
+          request.body.subject,
+          request.body.contents,
+          request.body.sending
+        );
+        response.sendStatus(200);
+      } else {
+        response.sendStatus(404);
+      }
+    } else {
+      response.sendStatus(403);
     }
   });
 };
