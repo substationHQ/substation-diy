@@ -112,12 +112,14 @@ module.exports = function(app, db) {
         }
         //console.log(request.body.subject + "\n\n" + request.body.contents);
         var messaging = require(__dirname + "/../utility/messaging.js");
+              
         messaging.sendMailing(
           app,
           request.body.subject,
           request.body.contents,
           request.body.sending
         );
+        
         response.sendStatus(200);
       } else {
         response.sendStatus(404);

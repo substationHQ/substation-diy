@@ -82,6 +82,8 @@ module.exports.sendMailing = function(
   sending
 ) {
   
+  //console.log(contents);
+  
   var details = {
     "copy":contents,
     "env": {
@@ -107,8 +109,8 @@ module.exports.sendMailing = function(
           }
         });
       } else {
-        console.log(html);
-        //initiateSend(subject,html,process.env.ADMIN_EMAIL);
+        //console.log(html);
+        initiateSend(subject,html,process.env.ADMIN_EMAIL);
       }
     }
   });
@@ -117,29 +119,53 @@ module.exports.sendMailing = function(
 
 
 // set "batch" to true if the to field is an array of email addresses
-var initiateSend = function(subject,contents,to,batch) {
+var initiateSend = function(subject,contents,to,attachments,batch) {
   // we're gonna need this in a second (to generate the plain text version)
   var htmlToText = require('html-to-text');
+  var jsdom = require("jsdom");
+  var { JSDOM } = jsdom;
 
-  var emailBody = contents;
-  var emailText = htmlToText.fromString(contents);
+  // now we'll use jsdom to get all base64 encoded images and pull them
+  // out, replacing them with a cid reference for mailing
+  var dom = new JSDOM(contents, { includeNodeLocations: true });
+  var images = dom.window.document.querySelectorAll("img");
+  var attachments = [];
 
+  images.forEach( 
+    function(img,index) {
+      if (img.src.substr(0,4) == 'data') {
+        // swiped regex from https://stackoverflow.com/questions/11335460/how-do-i-parse-a-data-url-in-node
+        // may(?) be worth splitting the img.src string for optimizations later, but that's later.
+        var regex = /^data:.+\/(.+);base64,(.*)$/;
+
+        var tmp = img.src;
+        
+        var matches = img.src.match(regex);
+        var ext = matches[1];
+        var data = matches[2];
+        var buffer = Buffer.from(data, 'base64');
+        
+        attachments.push(
+          new mg.Attachment({
+            data: buffer, 
+            filename: 'img'+index+'.'+ext,
+            contentType: 'image/'+ext
+          })
+        );
+        img.src = 'cid:img'+index+'.'+ext;
+      }
+    }
+  );
   
-  /********************
-   *
-   * BIG TODO: Need to move to nodemailer with a Mailgun transport
-   *
-   * This plugin will automatically convert inline base64 images: https://nodemailer.com/plugins/
-   * And this module will provide the mailgun transport: https://www.npmjs.com/package/nodemailer-mailgun-transport
-   *
-   ********************/
-  
+  var emailBody = dom.serialize();
+  var emailText = htmlToText.fromString(emailBody);  
   
   var emailData = {
     'from': process.env.MAILGUN_FROM_EMAIL,
     'subject': subject,
     'text': emailText,
     'html': emailBody,
+    'inline': attachments
   };
   
   if (batch) {

@@ -52,11 +52,11 @@
       <div class="row">
         <div class="{{#showadmin}}eight{{/showadmin}}{{^showadmin}}six{{/showadmin}} columns">
           {{#showadmin}}
-            <p>
+            <!--p>
               Instructions.
-            </p>
+            </p-->
           
-            <form id="admin-mailing" action="./mailing" method="POST">
+            <form id="admin-mailing" action="./mailing" method="POST" enctype="multipart/form-data">
               <input type="text" placeholder="Email subject" id="subject" name="subject">
           
               <!-- Create the Quill editor container -->
@@ -109,9 +109,9 @@
                 document.querySelector('input[name=contents]').value = quill.root.innerHTML;
                 
                 var vv = window.lodge;
-                var poststring = 'subject='+document.querySelector('input[name=subject]').value;
-                poststring += '&contents='+document.querySelector('input[name=contents]').value;
-                poststring += '&sending='+document.querySelector('input[name=sending]').value;
+                var poststring = 'subject='+encodeURIComponent(document.querySelector('input[name=subject]').value);
+                poststring += '&contents='+encodeURIComponent(document.querySelector('input[name=contents]').value);
+                poststring += '&sending='+encodeURIComponent(document.querySelector('input[name=sending]').value);
                 
                 vv.ajax.send('./mailing', poststring, function(r) {
                   if (r == 'OK') {

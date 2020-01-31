@@ -14,11 +14,13 @@
     "braintree": "^2.21.0",
     "express": "^4.17.1",
     "express-session": "^1.16.1",
-    "session-file-store": "^1.3.1",
+    "form-data": "^3.0.0",
     "html-to-text": "^5.1.1",
-    "mustache-express": "^1.3.0",
-    "sqlite3": "^4.1.1",
+    "jsdom": "^16.0.1",
     "mailgun-js": "^0.22.0",
+    "mustache-express": "^1.3.0",
+    "session-file-store": "^1.4.0",
+    "sqlite3": "^4.1.1",
     "uuid": "^3.4.0"
   },
   "engines": {
