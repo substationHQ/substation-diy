@@ -1,4 +1,5 @@
 module.exports = function (app, db) {
+  require(__dirname + '/api.js')(app,db);
   require(__dirname + '/dashboard.js')(app,db);
   require(__dirname + '/subscriptions.js')(app,db);
 
@@ -29,8 +30,7 @@ module.exports = function (app, db) {
             minimumCost: process.env.BRAINTREE_MINIMUM_COST
           },
           copy: {
-            title: process.env.TITLE,
-            description: process.env.DESCRIPTION
+            title: process.env.TITLE
           },
           style: {
             titleColor: process.env.STYLE_TITLE_COLOR,

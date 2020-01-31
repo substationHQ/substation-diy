@@ -63,15 +63,39 @@ module.exports.add = function(
             },
             function(e, r) {
               // this is where we find out if it worked and send a response
-              //
-              // TODO/MAILGUN: send welcome email to [request.body.email]
-              //
               // console.log(JSON.stringify(r));
               callback(null, 200);
             }
           );
         } else {
           // Card processing failed. Send a PaymentRequired 402
+          // TODO: better error handling between validation and form
+          /*
+          
+            This shows we need to encode plus signs, but also we need 
+            a fallback failure for any validation errors
+            
+            Related, but tangent: the form needs a progress indicator
+          
+            ErrorResponse {
+              errors: ValidationErrorsCollection {
+                validationErrors: {},
+                errorCollections: { customer: [ValidationErrorsCollection] }
+              },
+              params: {
+                customer: {
+                  firstName: 'Jesse',
+                  lastName: 'James',
+                  email: 'jessevondoom heresanothertest@gmail.com',
+                  paymentMethodNonce: 'tokencc_bc_yw3dp2_yff7gj_y3sbmy_77kstx_7z4',
+                  creditCard: [Object]
+                }
+              },
+              message: 'Email is an invalid format.',
+              success: false
+            }
+          */
+          console.log(res);
           callback(402, null);
         }
       }
@@ -201,4 +225,7 @@ module.exports.remove = function(email, callback) {
   );
 };
 
-module.exports.validate = function() {};
+module.exports.validate = function(email) {
+  // TODO: check email address against active subscribers to
+  //       validate the subscriber
+};

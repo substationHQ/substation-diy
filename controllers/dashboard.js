@@ -1,6 +1,7 @@
 module.exports = function(app, db) {
   // dashboard page:
   app.get("/dashboard", function(request, response) {
+    var users = require(__dirname + "/../models/users.js");
     request.details = {
       copy: {
         title: process.env.TITLE,
@@ -12,7 +13,7 @@ module.exports = function(app, db) {
       request.details.showadmin = true;
       response.render("dashboard", request.details);
     } else {
-      if (request.query.email == process.env.ADMIN_EMAIL) {
+      if (users.isAdmin(request.query.email)) {
         if (request.query.nonce) {
           // returning from a login email
           console.log("admin login attempt: " + request.query.nonce);
@@ -30,16 +31,18 @@ module.exports = function(app, db) {
           );
         } else {
           // requesting a login — send a link
-
           var mailer = require(__dirname + "/../utility/messaging.js");
-          mailer.sendToken(
+          
+          mailer.sendMessage(
+            app,
             process.env.ADMIN_EMAIL,
-            "Log in link for " + process.env.TITLE,
-            "Here you go.",
-            "To log in just follow this link. It's a one-time link like a password reset, but you never have to worry about a password.",
+            "Log in to " + process.env.TITLE,
+            "Just click to login.",
+            "login",
             "Log in now",
             process.env.URL + "dashboard"
           );
+          
           request.details.postsend = true;
           response.render("dashboard", request.details);
         }
@@ -79,6 +82,50 @@ module.exports = function(app, db) {
     } else {
       console.log("export error — not logged in");
       response.render("dashboard", request.details);
+    }
+  });
+  
+  // mailing page:
+  app.get("/mailing", function(request, response) {
+    var users = require(__dirname + "/../models/users.js");
+    request.details = {
+      copy: {
+        title: process.env.TITLE,
+        description: process.env.DESCRIPTION
+      }
+    };
+    request.details.showadmin = false;
+    if (request.session.administrator) {
+      request.details.showadmin = true;
+      response.render("mailing", request.details);
+    } else {
+      response.render("mailing", request.details);
+    }
+  });
+  
+  // mailing action
+  app.post("/mailing", function(request, response) {
+    if (request.session.administrator) {
+      if (request.body.subject && request.body.contents) {
+        if (!request.body.sending) {
+          request.body.subject += ' [TEST]'; 
+        }
+        //console.log(request.body.subject + "\n\n" + request.body.contents);
+        var messaging = require(__dirname + "/../utility/messaging.js");
+              
+        messaging.sendMailing(
+          app,
+          request.body.subject,
+          request.body.contents,
+          request.body.sending
+        );
+        
+        response.sendStatus(200);
+      } else {
+        response.sendStatus(404);
+      }
+    } else {
+      response.sendStatus(403);
     }
   });
 };

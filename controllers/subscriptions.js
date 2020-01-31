@@ -1,4 +1,19 @@
 module.exports = function(app, db) {
+  // create new nonce and send unsubscribe link
+  app.post("/unsubscribe", function(request, response) {
+    var mailer = require(__dirname + "/../utility/messaging.js");
+    mailer.sendMessage(
+      app,
+      request.body.email,
+      "Cancel " + process.env.TITLE + " membership",
+      "We're sorry to see you go.",
+      "unsubscribe",
+      "Cancel payments",
+      process.env.URL + "unsubscribe"
+    );
+    response.sendStatus(200);
+  });
+  
   // return from unsubscribe request
   app.get("/unsubscribe", function(request, response) {
     // set up variables we'll use when we're done here
@@ -57,6 +72,14 @@ module.exports = function(app, db) {
             // sends a 402 (or other error) from the add function
             response.sendStatus(err);
           } else {
+            var mailer = require(__dirname + "/../utility/messaging.js");
+            mailer.sendMessage(
+              app,
+              request.body.email,
+              "Welcome to " + process.env.TITLE,
+              "Hi there.",
+              "welcome"
+            );
             // sends 200 or current status
             response.sendStatus(status);      
           }
@@ -65,19 +88,5 @@ module.exports = function(app, db) {
     } else {
       response.sendStatus(404);
     }
-  });
-
-  // create new nonce and send unsubscribe link
-  app.post("/unsubscribe", function(request, response) {
-    var mailer = require(__dirname + "/../utility/messaging.js");
-    mailer.sendToken(
-      request.body.email,
-      "Cancel " + process.env.TITLE + " membership",
-      "We're sorry to see you go.",
-      "To cancel membership in " + process.env.TITLE + " click here.",
-      "Cancel payments",
-      process.env.URL + "unsubscribe"
-    );
-    response.sendStatus(200);
   });
 };
