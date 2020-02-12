@@ -188,6 +188,11 @@ a.button:hover, button:hover, input[type=submit]:hover, input[type=button]:hover
   background-color: rgb(235, 219, 0);
 }
 
+button:disabled, input[type=button]:disabled {
+  background-color: #666;
+  color: #999;
+}
+
 
 /* hero */
 .hero {
@@ -327,9 +332,12 @@ span.github {
   color:#222;
 }
 
-/* checkout */
+/* overlays and checkout */
 .vv-overlay {
   background: rgba(31,31,41, 0.95) !important;
+}
+.vv-overlay h2 {
+  color: #fff;
 }
 #braintree-token-form input#button-pay.show-button {
   background: mediumseagreen !important;

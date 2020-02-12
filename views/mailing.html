@@ -58,20 +58,21 @@
         <div class="two columns">&nbsp;</div>
         <div class="eight columns">
           {{#showadmin}}
-            <!--p>
-              Instructions.
-            </p-->
+            <p>
+              Write a message and send a test to yourself to unlock the "send to all" button. If 
+              the test looks good then let it fly. 
+            </p>
           
             <form id="admin-mailing" action="./mailing" method="POST" enctype="multipart/form-data">
               <input type="text" placeholder="Email subject" id="subject" name="subject">
           
               <!-- Create the Quill editor container -->
-              <div id="mailing-editor"><br><br><br></div>
+              <div id="mailing-editor"></div>
               
               <br><br>
               <input type="hidden" name="contents" />
               <input type="hidden" name="sending" />
-              <input type="button" id="mailing-test" value="Send a test to yourself" /> <input type="button" id="mailing-send" value="Send to all subscribers" />
+              <input type="button" id="mailing-test" value="Send a test to yourself" /> <input type="button" id="mailing-send" value="Send to all subscribers" disabled />
             </form>
 
             <!-- Include the Quill library -->
@@ -96,6 +97,7 @@
               var sendbutton = document.querySelector('#mailing-send');
               testbutton.onclick = function(e) {
                 initiateMailing('Check your inbox for a test email.');
+                sendbutton.disabled = false;
                 e.preventDefault();
                 return false;
               };
