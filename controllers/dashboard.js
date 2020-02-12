@@ -146,8 +146,11 @@ module.exports = function(app, db) {
   app.post("/mailing", function(request, response) {
     if (request.session.administrator) {
       if (request.body.subject && request.body.contents) {
+        var sendToAll = false;
         if (!request.body.sending) {
           request.body.subject += ' [TEST]'; 
+        } else {
+          var sendToAll = true;
         }
         //console.log(request.body.subject + "\n\n" + request.body.contents);
         var messaging = require(__dirname + "/../utility/messaging.js");
