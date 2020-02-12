@@ -103,6 +103,42 @@ module.exports.add = function(
   }
 };
 
+module.exports.getTotals = function(callback) {
+  var stream = gateway.subscription.search(
+    function(search) {
+      search.planId().is(process.env.BRAINTREE_PLAN_ID);
+      search.status().is("Active");
+    },
+    function(err, subs) {
+      if (err) {
+        callback(err.message, null);
+      } else {
+        var totals = {
+          "value": 0,
+          "members":0
+        };
+        var len = subs.length();
+        var count = 0;
+        subs.each(function(err, subscription) {
+          if (subscription.transactions[0].customer.email !== "") {
+            totals.members = totals.members+1;
+            totals.value = Math.round(totals.value + parseFloat(subscription.nextBillingPeriodAmount));
+          }
+          count++;
+          // check if we've read the whole stream. if so, output the CSV
+          if (count == len) {
+            if (count > 0) {
+              callback(null,totals);
+            } else {
+              callback("Not found", null);
+            }
+          }
+        });
+      }
+    }
+  );
+}
+
 module.exports.getActive = function(callback) {
   // subscribers.getActive(function(err, subs){...});
   var users = [
@@ -134,7 +170,7 @@ module.exports.getActive = function(callback) {
             //console.log(subscription.transactions[0].customer.email);
           }
           count++;
-          // check if we've read the wole stream. if so, output the CSV
+          // check if we've read the whole stream. if so, output the CSV
           if (count == len) {
             if (count > 0) {
               callback(null, users);

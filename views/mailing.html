@@ -19,6 +19,7 @@
   <link rel="stylesheet" type="text/css" href="/normalize.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/custom.css">
+  <link rel="stylesheet" type="text/css" href="/dashboard.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -41,8 +42,12 @@
   <div class="section hero">
     <div class="container">
       <div class="row">
-        <h1 id="site-title"><span class="logo">⫻</span>{{copy.title}}</h1>
-        <h2>Mailing</h2>
+        <h1>
+          Mail all current members
+        </h1>
+        <h2>
+          SUBSTATION <span class="diy"><a href="/dashboard">DASHBOARD</a>: MAILING</span> <span class="logo">///</span>
+        </h2>
       </div>
     </div>
   </div>
@@ -50,7 +55,8 @@
   <div class="section more">
     <div class="container">
       <div class="row">
-        <div class="{{#showadmin}}eight{{/showadmin}}{{^showadmin}}six{{/showadmin}} columns">
+        <div class="two columns">&nbsp;</div>
+        <div class="eight columns">
           {{#showadmin}}
             <!--p>
               Instructions.
@@ -136,6 +142,20 @@
               </p>
             {{/postsend}}
           {{/showadmin}}
+        </div>
+        <div class="two columns">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section footer">
+    <div class="container">
+      
+      <div class="row">
+        <div class="corner">
+          <h1>
+            <span class="logo">///</span>
+          </h1>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@
   <link rel="stylesheet" type="text/css" href="/normalize.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/custom.css">
+  <link rel="stylesheet" type="text/css" href="/dashboard.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -30,19 +31,23 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
+  
   <div class="section hero">
     <div class="container">
       <div class="row">
-        <h1 id="site-title"><span class="logo">⫻</span>{{copy.title}}</h1>
-        <h2>
+        <h1>
           {{#showgoodbye}}
             We're sorry to see you go.
           {{/showgoodbye}}
           {{^showgoodbye}}
             Something went wrong.
           {{/showgoodbye}}
+        </h1>
+        <h2>
+          SUBSTATION <span class="diy">DIY</span> <span class="logo">///</span>
         </h2>
         <p>
+          <br />
           {{#showgoodbye}}
             Your recurring payment has been cancelled. You will still be seen as holding an active 
             subscription membership through the end of this current billing cycle. Should you want 

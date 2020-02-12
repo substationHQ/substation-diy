@@ -163,7 +163,8 @@ input[type=text] {
 }
 */
   
-a.button, button, input[type=submit] {
+a.button, button, input[type=submit], input[type=button] {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
   font-size: 12px;
   line-height:16px;
   background-color: mediumseagreen;
@@ -182,7 +183,7 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-a.button:hover, button:hover, input[type=submit]:hover {
+a.button:hover, button:hover, input[type=submit]:hover, input[type=button]:hover {
   color:black;
   background-color: rgb(235, 219, 0);
 }
