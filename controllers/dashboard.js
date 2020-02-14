@@ -38,13 +38,13 @@ module.exports = function(app, db) {
         response.render("dashboard", request.details);
       }
     } else {
-      if (users.isAdmin(request.query.email)) {
+      if (request.query.email && users.isAdmin(request.query.email)) {
         if (request.query.nonce) {
           // returning from a login email
           console.log("admin login attempt: " + request.query.nonce);
           var auth = require(__dirname + "/../utility/auth.js");
           auth.validateNonce(
-            process.env.ADMIN_EMAIL,
+            request.query.email,
             request.query.nonce,
             function(err, data) {
               if (data) {
@@ -74,7 +74,7 @@ module.exports = function(app, db) {
           
           mailer.sendMessage(
             app,
-            process.env.ADMIN_EMAIL,
+            request.query.email,
             "Log in to " + process.env.TITLE,
             "Just click to login.",
             "login",

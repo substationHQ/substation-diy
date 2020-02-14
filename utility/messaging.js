@@ -102,7 +102,11 @@ module.exports.sendMailing = function(
       if (sending) {
         initiateSend(subject,html,false,true);
       } else {
-        initiateSend(subject,html,process.env.ADMIN_EMAIL);
+        var users = require(__dirname + "/../models/users.js");
+        var admins = users.getAdminUsers();
+        admins.forEach(function(admin){
+          initiateSend(subject,html,admin);
+        });
       }
     }
   });
