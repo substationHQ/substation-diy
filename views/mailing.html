@@ -74,62 +74,6 @@
               <input type="hidden" name="sending" />
               <input type="button" id="mailing-test" value="Send a test to yourself" /> <input type="button" id="mailing-send" value="Send to all subscribers" disabled />
             </form>
-
-            <!-- Include the Quill library -->
-            <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
-            <!-- Initialize Quill editor -->
-            <script>
-              var toolbarOptions = [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'align': [] }], [{ 'color': [] }, { 'background': [] }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image']];
-              var quill = new Quill('#mailing-editor', {
-                theme: 'snow',
-                modules: {
-                  toolbar: toolbarOptions
-                }
-              });
-            </script>
-          
-            <!-- Include jQuery -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-            <script>
-              var form = document.querySelector('#admin-mailing');
-              var testbutton = document.querySelector('#mailing-test');
-              var sendbutton = document.querySelector('#mailing-send');
-              testbutton.onclick = function(e) {
-                initiateMailing('Check your inbox for a test email.');
-                sendbutton.disabled = false;
-                e.preventDefault();
-                return false;
-              };
-              sendbutton.onclick = function(e) {
-                document.querySelector('input[name=sending]').value = 'true';
-                initiateMailing('Well. That\'s been sent out to all your subscribers.');
-                //form.style.visibility = 'hidden';
-                e.preventDefault();
-                return false;
-              };
-              form.onsubmit = function(e) {
-                e.preventDefault();
-                return false;
-              };
-              
-              function initiateMailing(successMessage) {
-                document.querySelector('input[name=contents]').value = quill.root.innerHTML;
-                
-                var vv = window.lodge;
-                var poststring = 'subject='+encodeURIComponent(document.querySelector('input[name=subject]').value);
-                poststring += '&contents='+encodeURIComponent(document.querySelector('input[name=contents]').value);
-                poststring += '&sending='+encodeURIComponent(document.querySelector('input[name=sending]').value);
-                
-                vv.ajax.send('./mailing', poststring, function(r) {
-                  if (r == 'OK') {
-                    vv.overlay.reveal('<h2 class="vv-checkout-success">'+successMessage+'</h2>');
-                  } else {
-                    vv.overlay.reveal('<h2 class="vv-checkout-error">Something went wrong. Please reload the page and try again.</h2>');
-                  }
-                });
-              }
-            </script>
           {{/showadmin}}
           {{^showadmin}}
             {{^postsend}}
@@ -165,6 +109,62 @@
   
 <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/loading.js"></script>
+  {{#showadmin}}  
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Initialize Quill editor -->
+    <script>
+      var toolbarOptions = [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'align': [] }], [{ 'color': [] }, { 'background': [] }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image']];
+      var quill = new Quill('#mailing-editor', {
+        theme: 'snow',
+        modules: {
+          toolbar: toolbarOptions
+        }
+      });
+
+      var form = document.querySelector('#admin-mailing');
+      var testbutton = document.querySelector('#mailing-test');
+      var sendbutton = document.querySelector('#mailing-send');
+      testbutton.onclick = function(e) {
+        initiateMailing('Check your inbox for a test email.');
+        sendbutton.disabled = false;
+        e.preventDefault();
+        return false;
+      };
+      sendbutton.onclick = function(e) {
+        document.querySelector('input[name=sending]').value = 'true';
+        initiateMailing('Well. That\'s been sent out to all your subscribers.');
+        //form.style.visibility = 'hidden';
+        e.preventDefault();
+        return false;
+      };
+      form.onsubmit = function(e) {
+        e.preventDefault();
+        return false;
+      };
+
+      function initiateMailing(successMessage) {
+        document.querySelector('input[name=contents]').value = quill.root.innerHTML;
+
+        var vv = window.lodge;
+        var poststring = 'subject='+encodeURIComponent(document.querySelector('input[name=subject]').value);
+        poststring += '&contents='+encodeURIComponent(document.querySelector('input[name=contents]').value);
+        poststring += '&sending='+encodeURIComponent(document.querySelector('input[name=sending]').value);
+
+        triggerLoading(vv);
+        
+        vv.ajax.send('./mailing', poststring, function(r) {
+          if (r == 'OK') {
+            vv.overlay.reveal('<h2 class="vv-checkout-success">'+successMessage+'</h2>');
+          } else {
+            vv.overlay.reveal('<h2 class="vv-checkout-error">Something went wrong. Please reload the page and try again.</h2>');
+          }
+        });
+      }
+    </script>
+  {{/showadmin}}
   
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

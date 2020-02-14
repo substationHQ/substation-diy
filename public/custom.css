@@ -201,6 +201,18 @@ button:disabled, input[type=button]:disabled {
 }
 
 
+/* loading */
+#substation-loading {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-27px;
+  margin-top:-24px;
+  width: 55px;
+  height:48px;
+}
+
+
 /* body */
 #body-copy {
   padding:2em 0 1.5em 0;
