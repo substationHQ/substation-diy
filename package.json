@@ -12,9 +12,11 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "braintree": "^2.21.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.16.1",
     "form-data": "^3.0.0",
+    "helmet": "^3.21.2",
     "html-to-text": "^5.1.1",
     "jsdom": "^16.1.0",
     "mailgun-js": "^0.22.0",

@@ -3,6 +3,8 @@ var session = require("express-session");
 var FileStore = require('session-file-store')(session);
 var bodyParser = require("body-parser");
 var mustacheExpress = require("mustache-express");
+var cors = require('cors');
+var helmet = require('helmet');
 
 var fileStoreOptions = {
   "path":__dirname+"/../.data"
@@ -21,6 +23,12 @@ app.use(
     }
   })
 );
+
+// http security measures
+app.use(helmet());
+
+// enable CORS for all requests
+app.use(cors());
 
 // parse every kind of request automatically
 //app.use(bodyParser.json({limit: '24mb', extended: true}))
