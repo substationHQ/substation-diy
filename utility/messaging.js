@@ -128,7 +128,7 @@ var initiateSend = function(subject,contents,to,batch) {
   var attachments = [];
 
   images.forEach( 
-    function(img,index) {
+    async function(img,index) {
       if (img.src.substr(0,4) == 'data') {
         // swiped regex from https://stackoverflow.com/questions/11335460/how-do-i-parse-a-data-url-in-node
         // may(?) be worth splitting the img.src string for optimizations later, but that's later.

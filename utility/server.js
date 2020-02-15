@@ -23,7 +23,9 @@ app.use(
 );
 
 // parse every kind of request automatically
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json({limit: '24mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '24mb', extended: true}))
+
 // directly serve static files from the public folder
 app.use(express.static(__dirname + "/../public"));
 // mustache-express settings
