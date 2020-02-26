@@ -163,7 +163,8 @@ input[type=text] {
 }
 */
   
-a.button, button, input[type=submit] {
+a.button, button, input[type=submit], input[type=button] {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
   font-size: 12px;
   line-height:16px;
   background-color: mediumseagreen;
@@ -182,9 +183,14 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-a.button:hover, button:hover, input[type=submit]:hover {
+a.button:hover, button:hover, input[type=submit]:hover, input[type=button]:hover {
   color:black;
   background-color: rgb(235, 219, 0);
+}
+
+button:disabled, input[type=button]:disabled {
+  background-color: #666;
+  color: #999;
 }
 
 
@@ -192,6 +198,18 @@ a.button:hover, button:hover, input[type=submit]:hover {
 .hero {
   padding: 10em 0 12em 0;
   background: bottom center no-repeat url(https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Fhero.jpg?v=1580922576463);
+}
+
+
+/* loading */
+#substation-loading {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-27px;
+  margin-top:-24px;
+  width: 55px;
+  height:48px;
 }
 
 
@@ -261,6 +279,8 @@ span.github {
 
 #details {
   position: relative;
+  box-shadow: -2px 2px 4px rgba(0,0,0,0.3);
+  border-radius: 9px;
   top:-9em;
 }
 
@@ -326,9 +346,12 @@ span.github {
   color:#222;
 }
 
-/* checkout */
+/* overlays and checkout */
 .vv-overlay {
   background: rgba(31,31,41, 0.95) !important;
+}
+.vv-overlay h2 {
+  color: #fff;
 }
 #braintree-token-form input#button-pay.show-button {
   background: mediumseagreen !important;

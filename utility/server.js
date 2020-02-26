@@ -1,8 +1,11 @@
 var express = require("express");
 var session = require("express-session");
 var FileStore = require('session-file-store')(session);
+var csp = require('express-csp-header');
 var bodyParser = require("body-parser");
 var mustacheExpress = require("mustache-express");
+var cors = require('cors');
+var helmet = require('helmet');
 
 var fileStoreOptions = {
   "path":__dirname+"/../.data"
@@ -22,8 +25,35 @@ app.use(
   })
 );
 
+// http security measures
+app.use(helmet());
+
+// enable CORS for all requests
+app.use(cors());
+
+// create a nonce to use with all inline script tags
+app.scriptNonce = Buffer.from(process.env.SECURITY_SECRET + Date.now()).toString('base64').substring(0, 12);
+
+// enable basic csp headers
+app.use(csp({
+  policies: {
+    "default-src": ['https:', 'data:', "'unsafe-inline'"],
+    "script-src": [
+      "'nonce-"+app.scriptNonce+"'",
+      "https://cdn.jsdelivr.net/gh/substation-me/",
+      "https://js.braintreegateway.com/",
+      "https://cdn.quilljs.com/"
+    ],
+    "object-src": ["'self'"],
+    "form-action": ["'self'"],
+    "base-uri": ['none']
+  }
+}));
+
 // parse every kind of request automatically
-app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(bodyParser.json({limit: '24mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '24mb', extended: true}))
+
 // directly serve static files from the public folder
 app.use(express.static(__dirname + "/../public"));
 // mustache-express settings

@@ -23,7 +23,7 @@
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Flogo-bw-email.png?v=1579197689402">
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js" data-options="noembed"></script>
+  <script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js" data-options="noembed" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -47,20 +47,7 @@
         <div class="seven columns spacer">&nbsp;</div>
         <div class="five columns spacer">
           <div id="details">
-            <div class="subscription-widget">
-              <div class="checkout-button">
-                <input type="number" id="input-price" value="{{braintree.minimumCost}}">
-                <button id="checkout">Subscribe: $<span id="checkout-price">{{braintree.minimumCost}}</span>/mo</button>
-              </div>
-              {{#sandboxed}}
-              <div class="sandbox-mode">
-                <b>SANDBOX MODE.</b> <a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/node">Test cards</a> only, no real currency.
-              </div>
-              {{/sandboxed}}
-              <div class="fine-print">
-                By signing up you are agreeing to recurring payments. You are free to <a href="#" id="cancelLink">cancel</a> any time.
-              </div>
-            </div>
+            <embed class="lodge" src="/embed">
           </div>
         </div>
       </div>
@@ -71,7 +58,7 @@
           <div id="widget-copy">
             <h4>Try it out</h4>
             <p class="small">
-              Signup is easy for your people — test it yourself with this card number, and any date / CVV:
+              Signup is easy for your people — test it yourself with this card number, and any date / CVV:<br />
               <samp>4111 1111 1111 1111</samp>
             </p>
           </div>
@@ -131,83 +118,7 @@
   
 <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  
-  <script>
-    var vv = window.lodge;
-    // set our options for the checkout module
-    var checkoutOptions = {
-      braintree: '{{{braintree.clientToken}}}',
-      recurring:true,
-      endpoint:'/subscribe',
-      successMsg:'Success. Your monthly payments are set up, and you should see a confirmation email shortly.',
-      errorMsg:'There was a problem. Please check your credit card information and try again.',
-      amount:{{braintree.minimumCost}}
-    };
-    
-    // don't set up any events until Lodge says we're ready
-    vv.events.add(vv,'ready', function(e) {
-      // load the checkout module then prep (loads CSS stuff so there's no lag when we open the window)
-      vv.loadScript(vv.path + '/checkout/checkout.js', function () {
-        vv.checkout.prep();
-      });
-      
-      // allow for price customization
-      vv.events.add(document.getElementById('input-price'),'change', function(e) {
-        if (e.target.value > {{braintree.minimumCost}}) {
-          checkoutOptions.amount = e.target.value;
-          document.getElementById('checkout-price').innerHTML = e.target.value;
-        } else {
-          e.target.value = {{braintree.minimumCost}};
-        }
-      });
-      
-      // start the checkout process
-      vv.events.add(document.getElementById('checkout'),'click', function(e) {
-        e.preventDefault();
-        vv.checkout.begin(checkoutOptions);
-      });
-      
-      // handle the unsubscription flow
-      vv.events.add(document.getElementById('cancelLink'),'click', function(e) {
-        e.preventDefault();
-        
-        var container = document.createElement('div');
-            container.id = 'unsubscribe-form-wrapper';
-        var instructions = document.createElement('p');
-            instructions.innerHTML = 'Enter your email below and check your inbox for an unsubscribe link.';
-        var unsubscribeForm = document.createElement('form');
-            unsubscribeForm.id = 'unsubscribeForm';
-        var emailInput = document.createElement('input');
-            emailInput.type = 'email';
-            emailInput.id = 'unsubscribeEmail';
-            emailInput.placeholder = 'you@email.com';
-        var emailSubmit = document.createElement('input');
-            emailSubmit.type = 'submit';
-            emailSubmit.value = 'Unsubscribe';
-        
-        vv.events.add(emailSubmit,'click', function(e) {
-          e.preventDefault();
-          
-          var poststring = 'email='+document.getElementById('unsubscribeEmail').value;
-          vv.ajax.send('/unsubscribe', poststring, function(r) {
-            if (r == 'OK') {
-              vv.overlay.reveal('<h2 class="vv-checkout-success">Check your inbox. We\'ve sent you a secure unsubscribe link.</h2>');
-            } else {
-              vv.overlay.reveal('<h2 class="vv-checkout-error">Something went wrong. Please reload the page and try again.</h2>');
-            }
-          });
-        });
-        
-        unsubscribeForm.appendChild(emailInput);
-        unsubscribeForm.appendChild(emailSubmit);
 
-        container.appendChild(instructions);
-        container.appendChild(unsubscribeForm);
-        
-        vv.overlay.reveal(container);
-      });
-    });
-  </script>
   
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

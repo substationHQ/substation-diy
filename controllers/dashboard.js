@@ -6,27 +6,67 @@ module.exports = function(app, db) {
       copy: {
         title: process.env.TITLE,
         description: process.env.DESCRIPTION
-      }
+      },
+      substationURL: process.env.URL
     };
     request.details.showadmin = false;
+    
+    // this is some clumsy bullshit to cache the totals we get from
+    // the subscribers model. it's...not great
+    var timestamp = Date.now();
+    var pollTotals = true;
+    if (request.session.subtotals) {
+      if (request.session.subtotals.time + 1200000 > timestamp) {
+        request.details.subscription = request.session.subtotals;
+        var pollTotals = false;
+      }
+    }
+    
     if (request.session.administrator) {
       request.details.showadmin = true;
-      response.render("dashboard", request.details);
+      // this is repeated below. TODO: refactor so it's not dumb.
+      if (pollTotals) {
+        var subscribers = require(__dirname + "/../models/subscribers.js");
+        subscribers.getTotals(function(err, sub) {
+          if (sub) {
+            sub.time = timestamp;
+            request.details.subscription = sub;
+            request.session.subtotals = sub;
+          }
+          response.render("dashboard", request.details);
+        });
+      } else {
+        response.render("dashboard", request.details);
+      }
     } else {
-      if (users.isAdmin(request.query.email)) {
+      if (request.query.email && users.isAdmin(request.query.email)) {
         if (request.query.nonce) {
           // returning from a login email
           console.log("admin login attempt: " + request.query.nonce);
           var auth = require(__dirname + "/../utility/auth.js");
           auth.validateNonce(
-            process.env.ADMIN_EMAIL,
+            request.query.email,
             request.query.nonce,
             function(err, data) {
               if (data) {
                 request.session.administrator = true;
                 request.details.showadmin = true;
               }
-              response.render("dashboard", request.details);
+              request.details.showadmin = true;
+              // this is repeated above. TODO: refactor so it's not dumb.
+              if (pollTotals) {
+                var subscribers = require(__dirname + "/../models/subscribers.js");
+                subscribers.getTotals(function(err, sub) {
+                  if (sub) {
+                    sub.time = timestamp;
+                    request.details.subscription = sub;
+                    request.session.subtotals = sub;
+                  }
+                  response.render("dashboard", request.details);
+                });
+              } else {
+                response.render("dashboard", request.details);
+              }
             }
           );
         } else {
@@ -35,7 +75,7 @@ module.exports = function(app, db) {
           
           mailer.sendMessage(
             app,
-            process.env.ADMIN_EMAIL,
+            request.query.email,
             "Log in to " + process.env.TITLE,
             "Just click to login.",
             "login",
@@ -92,7 +132,8 @@ module.exports = function(app, db) {
       copy: {
         title: process.env.TITLE,
         description: process.env.DESCRIPTION
-      }
+      },
+      scriptNonce: app.scriptNonce
     };
     request.details.showadmin = false;
     if (request.session.administrator) {
@@ -107,8 +148,11 @@ module.exports = function(app, db) {
   app.post("/mailing", function(request, response) {
     if (request.session.administrator) {
       if (request.body.subject && request.body.contents) {
+        var sendToAll = false;
         if (!request.body.sending) {
           request.body.subject += ' [TEST]'; 
+        } else {
+          var sendToAll = true;
         }
         //console.log(request.body.subject + "\n\n" + request.body.contents);
         var messaging = require(__dirname + "/../utility/messaging.js");

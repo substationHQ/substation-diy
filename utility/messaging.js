@@ -100,17 +100,13 @@ module.exports.sendMailing = function(
       console.log("messaging.sendMailing: " + err);
     } else {
       if (sending) {
-        var subscribers = require(__dirname + "/../models/subscribers.js");
-        subscribers.getActive(function(err, subs) {
-          if (err) {
-            console.log("messaging.sendMailing: " + err);
-          } else {
-            
-          }
-        });
+        initiateSend(subject,html,false,true);
       } else {
-        //console.log(html);
-        initiateSend(subject,html,process.env.ADMIN_EMAIL);
+        var users = require(__dirname + "/../models/users.js");
+        var admins = users.getAdminUsers();
+        admins.forEach(function(admin){
+          initiateSend(subject,html,admin);
+        });
       }
     }
   });
@@ -119,7 +115,7 @@ module.exports.sendMailing = function(
 
 
 // set "batch" to true if the to field is an array of email addresses
-var initiateSend = function(subject,contents,to,attachments,batch) {
+var initiateSend = function(subject,contents,to,batch) {
   // we're gonna need this in a second (to generate the plain text version)
   var htmlToText = require('html-to-text');
   var jsdom = require("jsdom");
@@ -132,7 +128,7 @@ var initiateSend = function(subject,contents,to,attachments,batch) {
   var attachments = [];
 
   images.forEach( 
-    function(img,index) {
+    async function(img,index) {
       if (img.src.substr(0,4) == 'data') {
         // swiped regex from https://stackoverflow.com/questions/11335460/how-do-i-parse-a-data-url-in-node
         // may(?) be worth splitting the img.src string for optimizations later, but that's later.
@@ -169,14 +165,35 @@ var initiateSend = function(subject,contents,to,attachments,batch) {
   };
   
   if (batch) {
-     
+    var toArray = [];
+    var toVars = {};
+    var subscribers = require(__dirname + "/../models/subscribers.js");
+    subscribers.getActive(function(err, subs) {
+      if (err) {
+        console.log("error getting subscribers");
+      } else {
+        subs.forEach(function(s){
+          toArray.push(s.email);
+          toVars[s.email] = {
+            'firstName':s.firstName,
+            'lastName':s.lastName
+          }
+        });
+        emailData['to'] = toArray;
+        emailData['recipient-variables'] = toVars;
+        mg.messages().send(emailData, function(err, body) {
+          if (err) {
+            console.log("There was an error sending email. " + err);
+          }
+        });
+      }
+    });
   } else {
     emailData.to = to;
-  }
-
-  mg.messages().send(emailData, function(err, body) {
+    mg.messages().send(emailData, function(err, body) {
     if (err) {
       console.log("There was an error sending email. " + err);
     }
   });
+  }
 }

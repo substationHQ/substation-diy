@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Arvo|Quicksand&display=swap');
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+body {
+  background-color:transparent;
+  font-size: 16px;
+  font-family:'Arvo','helvetica neue',helvetica,arial,sans-serif;
+}
+
+h1,h2,h3,h4 {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
+  color:#000;
+}
+
+/* form elements */
+
+form {
+  margin-bottom: 25px;
+  padding: 15px 0 15px 0;
+  display: inline-block;
+  font-weight:200;
+  width: 100%;
+}
+
+/*
+input[type=text] {
+  font-family: system-ui;
+  font-weight: 400;
+  padding: 12px;
+  font-size: 16px;
+  line-height: 24px;
+  color: rgb(40, 44, 55);
+}
+*/
+  
+a.button, button, input[type=submit], input[type=button] {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
+  font-size: 12px;
+  line-height:16px;
+  background-color: mediumseagreen;
+  width:100%;
+  border: none;
+  padding: 16px;
+  height: 48px;
+  color: #fff;
+  text-transform:uppercase;
+  cursor: pointer;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+a.button:hover, button:hover, input[type=submit]:hover, input[type=button]:hover {
+  color:black;
+  background-color: rgb(235, 219, 0);
+}
+
+button:disabled, input[type=button]:disabled {
+  background-color: #666;
+  color: #999;
+}
+
+
+/*subscription widget*/
+
+.container.vv-embed {
+  width:100%;
+  padding:0;
+}
+
+#widget-copy {
+  position: relative;
+  top:-11em;
+  right:-1em;
+  text-align:right;
+}
+
+#details {
+  position: relative;
+  top:-9em;
+}
+
+.subscription-widget {
+  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
+  background-color:#fff;
+  margin-bottom:3em;
+  border-radius: 9px;
+  overflow:hidden;
+}
+
+.checkout-button {
+  display: flex;
+  padding: 16px;
+  position:relative;
+  justify-content:space-between;
+}
+
+.checkout-button input {
+  line-height:16px;
+  min-width:7em;
+  flex-basis:40%;
+  padding:1rem 1rem 1rem 2rem;
+  height:48px;
+  position:relative;
+}
+.checkout-button::before {
+  content:'$';
+  display:block;
+  height: 48px;
+  z-index:10;
+  color: #666;
+  line-height:16px;
+  padding:16px 0 0;
+  background:transparent;
+  position: absolute;
+  top:16px;
+  left:1.5em;
+}
+
+.checkout-button button {
+  height:48px;
+  flex-basis:55%;
+  transition:all 0.2s ease;
+}
+.checkout-button input:focus {
+  box-shadow: 0 0 8px rgba(100,193,235,0.5);
+}
+
+.fine-print, .sandbox-mode {
+  background: rgba(85,102,119,1);
+  padding: 16px;
+  font-size: 12px;
+  line-height: 14px;
+  color:#ccc;
+}
+
+.sandbox-mode {
+  background: rgba(235,219,0,1);
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,0,0.5) 15px, rgba(255,255,0,0.5) 30px);
+  padding: 8px 16px;
+  color:#222;
+}
+
+.checkout-button input {
+  flex-basis:40%;
+}
+
+.checkout-button button {
+  flex-basis:55%;
+}

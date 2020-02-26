@@ -19,6 +19,7 @@
   <link rel="stylesheet" type="text/css" href="/normalize.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/custom.css">
+  <link rel="stylesheet" type="text/css" href="/dashboard.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -33,8 +34,17 @@
   <div class="section hero">
     <div class="container">
       <div class="row">
-        <h1 id="site-title"><span class="logo">⫻</span>{{copy.title}}</h1>
-        <h2>Dashboard</h2>
+        <h1>
+          {{#showadmin}}
+          {{subscription.members}} people, ${{subscription.value}}/period
+          {{/showadmin}}
+          {{^showadmin}}
+          Log in
+          {{/showadmin}}
+        </h1>
+        <h2>
+          SUBSTATION <span class="diy">DASHBOARD</span> <span class="logo">///</span>
+        </h2>
       </div>
     </div>
   </div>
@@ -42,22 +52,32 @@
   <div class="section more">
     <div class="container">
       <div class="row">
-        <div class="six columns">
+        <div class="two columns">&nbsp;</div>
+        <div class="eight columns">
           {{#showadmin}}
             <p>
-              More management tasks coming soon, but for now just push the button below to export your
-              full list of active subscribers. This export is a real-time list of everyone active, so
-              you'll want to re-export every time you intend on looking at a currrent list of 
-              subscribers.
+              Here you can export your up-to-the-minnute member list as a basic CSV 
+              file or send a message to all those members directly. You'll also find
+              an embed code for a signup widget you can put on your own website.
             </p>
+            <code>
+              &lt;!-- Substation embed code --&gt;
+              <br />
+              &lt;script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js"&gt;&lt;/script&gt;<br />
+              &lt;embed class="lodge" src="{{substationURL}}embed"&gt;<br />
+            </code>
             <p>
+              <br />
               <a href="/export" class="button">Export subscribers as CSV</a>
-            </p>
-            <p>
+              <br />
               <a href="/mailing" class="button">Send a mailing to all subscribers</a>
             </p>
           {{/showadmin}}
           {{^showadmin}}
+            <p>
+              Substation doesn't use easily-forgotten passwords. Instead we send a secure single-use
+              login link directly to your inbox. Just enter your admin email address to get started.
+            </p>
             {{^postsend}}
               <form id="admin-login" action="/dashboard" method="GET">
                 <input type="email" placeholder="admin@email.com" name="email">
@@ -66,10 +86,24 @@
             {{/postsend}}
             {{#postsend}}
               <p>
-                Check your inbox. We just sent a secure single-use link to your dashboard.
+                Check your inbox. We just sent you a login link.
               </p>
             {{/postsend}}
           {{/showadmin}}
+        </div>
+        <div class="two columns">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section footer">
+    <div class="container">
+      
+      <div class="row">
+        <div class="corner">
+          <h1>
+            <span class="logo">///</span>
+          </h1>
         </div>
       </div>
     </div>
@@ -77,6 +111,7 @@
   
 <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="/loading.js"></script>
   
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
