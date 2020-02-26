@@ -1,8 +1,4 @@
 module.exports = function (app, db) {
-  require(__dirname + '/api.js')(app,db);
-  require(__dirname + '/dashboard.js')(app,db);
-  require(__dirname + '/subscriptions.js')(app,db);
-
   // serve domain root:
   app.get("/embed", function(request, response) {
     // set up braintree token for frontend javascript
