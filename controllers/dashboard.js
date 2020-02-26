@@ -6,7 +6,8 @@ module.exports = function(app, db) {
       copy: {
         title: process.env.TITLE,
         description: process.env.DESCRIPTION
-      }
+      },
+      substationURL: process.env.URL
     };
     request.details.showadmin = false;
     

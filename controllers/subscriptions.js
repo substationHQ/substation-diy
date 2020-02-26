@@ -11,7 +11,16 @@ module.exports = function(app, db) {
       "Cancel payments",
       process.env.URL + "unsubscribe"
     );
-    response.sendStatus(200);
+    
+    request.details = {
+      copy: {
+        title: process.env.TITLE,
+        description: process.env.DESCRIPTION
+      },
+      showgoodbye: true,
+      justrequested: true
+    };
+    response.render("unsubscribe", request.details);
   });
   
   // return from unsubscribe request

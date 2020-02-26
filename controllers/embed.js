@@ -1,11 +1,10 @@
 module.exports = function (app, db) {
   require(__dirname + '/api.js')(app,db);
   require(__dirname + '/dashboard.js')(app,db);
-  require(__dirname + '/embed.js')(app,db);
   require(__dirname + '/subscriptions.js')(app,db);
 
   // serve domain root:
-  app.get("/", function(request, response) {
+  app.get("/embed", function(request, response) {
     // set up braintree token for frontend javascript
     var braintree = require("braintree");
     var gateway = braintree.connect({
@@ -42,7 +41,7 @@ module.exports = function (app, db) {
           sandboxed: sandboxed
         };
       }
-      response.render("index", request.details);
+      response.render("embed", request.details);
     });
   });
 }
