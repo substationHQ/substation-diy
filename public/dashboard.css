@@ -52,5 +52,8 @@ code {
   height: 48px;
 }
 
-/* email composer (quill) */
+/* email composer (quill) PLUS other form elements */
 .ql-editor {min-height:16em;}
+.ql-toolbar {border-radius:4px 4px 0 0;}
+#subject {width:100%;}
+#mailing-editor {border-radius:0 0 4px 4px;background-color:#fff;}

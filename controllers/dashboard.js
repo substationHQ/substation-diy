@@ -132,7 +132,8 @@ module.exports = function(app, db) {
       copy: {
         title: process.env.TITLE,
         description: process.env.DESCRIPTION
-      }
+      },
+      scriptNonce: app.scriptNonce
     };
     request.details.showadmin = false;
     if (request.session.administrator) {

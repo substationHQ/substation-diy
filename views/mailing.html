@@ -13,6 +13,9 @@
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Include Quill stylesheet -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -24,15 +27,7 @@
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Flogo-bw-email.png?v=1579197689402">
-  <script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js" data-options="noembed"></script>
-  
-  <!-- Include Quill stylesheet -->
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-  <style type="text/css">
-    #subject {width:100%;}
-    #mailing-editor {border-radius:0 0 4px 4px;background-color:#fff;}
-    .ql-toolbar {border-radius:4px 4px 0 0;}
-  </style>
+  <script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js" data-options="noembed" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -115,7 +110,7 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
     <!-- Initialize Quill editor -->
-    <script>
+    <script nonce="{{scriptNonce}}">
       var toolbarOptions = [[{ 'header': [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ 'align': [] }], [{ 'color': [] }, { 'background': [] }], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image']];
       var quill = new Quill('#mailing-editor', {
         theme: 'snow',

@@ -28,12 +28,7 @@ module.exports = function (app, db) {
           copy: {
             title: process.env.TITLE
           },
-          style: {
-            titleColor: process.env.STYLE_TITLE_COLOR,
-            textColor: process.env.STYLE_TEXT_COLOR,
-            backgroundColor: process.env.STYLE_BACKGROUND_COLOR,
-            backgroundImage: process.env.STYLE_BACKGROUND_IMAGE
-          },
+          scriptNonce: app.scriptNonce,
           sandboxed: sandboxed
         };
       }
