@@ -57,7 +57,7 @@ module.exports.sendMessage = function(
   
   // prep the outgoing email
   var fs = require('fs');
-  var file = __dirname + '/../.config/views/messages/' + message + '.html';
+  var file = __dirname + '/../config/views/messages/' + message + '.html';
   try {
     if (!fs.existsSync(file)) {
       file = __dirname + '/../views/messages/' + message + '.html';  
@@ -69,7 +69,7 @@ module.exports.sendMessage = function(
   fs.readFile(file, 'utf8', function(err, contents) {
     if (contents) {
       details.copy = contents;
-      var email = __dirname + '/../.config/views/email.html';
+      var email = __dirname + '/../config/views/email.html';
       try {
         if (!fs.existsSync(email)) {
           email = 'email';  
@@ -114,7 +114,7 @@ module.exports.sendMailing = function(
   
   // prep the outgoing email
   var fs = require('fs');
-  var email = __dirname + '/../.config/views/email.html';
+  var email = __dirname + '/../config/views/email.html';
   try {
     if (!fs.existsSync(email)) {
       email = 'email';  

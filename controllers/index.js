@@ -13,7 +13,7 @@ module.exports = function (app, db) {
       };
     
       var fs = require('fs')
-      var file = __dirname + '/../.config/views/index.html';
+      var file = __dirname + '/../config/views/index.html';
 
       try {
         if (fs.existsSync(file)) {
