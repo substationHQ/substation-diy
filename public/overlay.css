@@ -1,0 +1,30 @@
+/* overlays and checkout */
+#substation-loading {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-27px;
+  margin-top:-24px;
+  width: 55px;
+  height:48px;
+}
+
+.vv-overlay {
+  background: rgba(31,31,41, 0.95) !important;
+}
+.vv-overlay h2 {
+  color: #fff;
+}
+#braintree-token-form input#button-pay.show-button {
+  background: mediumseagreen !important;
+  cursor:pointer;
+}
+#braintree-token-form input#button-pay.show-button:hover {
+  background: yellow !important;
+  color: black;
+}
+#braintree-token-form input#button-pay[disabled] {
+  background: #666 !important;
+  color: #999;
+  cursor: auto;
+}

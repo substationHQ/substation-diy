@@ -1,4 +1,5 @@
 var db = require(__dirname + "/database.js");
+var fs = require('fs');
 //var mailgen = require("mailgen");
 var mailgun = require("mailgun-js");
 
@@ -56,7 +57,6 @@ module.exports.sendMessage = function(
   }
   
   // prep the outgoing email
-  var fs = require('fs');
   var file = __dirname + '/../config/views/messages/' + message + '.html';
   try {
     if (!fs.existsSync(file)) {
@@ -113,7 +113,6 @@ module.exports.sendMailing = function(
   };
   
   // prep the outgoing email
-  var fs = require('fs');
   var email = __dirname + '/../config/views/email.html';
   try {
     if (!fs.existsSync(email)) {
