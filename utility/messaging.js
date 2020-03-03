@@ -57,10 +57,28 @@ module.exports.sendMessage = function(
   
   // prep the outgoing email
   var fs = require('fs');
-  fs.readFile(__dirname + '/../views/messages/' + message + '.html', 'utf8', function(err, contents) {
+  var file = __dirname + '/../.config/views/messages/' + message + '.html';
+  try {
+    if (!fs.existsSync(file)) {
+      file = __dirname + '/../views/messages/' + message + '.html';  
+    }
+  } catch(err) {
+    console.error(err);
+    file = __dirname + '/../views/messages/' + message + '.html';
+  }
+  fs.readFile(file, 'utf8', function(err, contents) {
     if (contents) {
       details.copy = contents;
-      app.render('email', details, function (err, html) {
+      var email = __dirname + '/../.config/views/email.html';
+      try {
+        if (!fs.existsSync(email)) {
+          email = 'email';  
+        }
+      } catch(err) {
+        console.error(err);
+        email = 'email';
+      }
+      app.render(email, details, function (err, html) {
         if (err) {
           console.log("messaging.sendTransactional: " + err);
         } else {
@@ -95,7 +113,17 @@ module.exports.sendMailing = function(
   };
   
   // prep the outgoing email
-  app.render('email', details, function (err, html) {
+  var fs = require('fs');
+  var email = __dirname + '/../.config/views/email.html';
+  try {
+    if (!fs.existsSync(email)) {
+      email = 'email';  
+    }
+  } catch(err) {
+    console.error(err);
+    email = 'email';
+  }
+  app.render(email, details, function (err, html) {
     if (err) {
       console.log("messaging.sendMailing: " + err);
     } else {

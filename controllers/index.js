@@ -11,6 +11,19 @@ module.exports = function (app, db) {
           title: process.env.TITLE
         }
       };
-      response.render("index", request.details);
+    
+      var fs = require('fs')
+      var file = __dirname + '/../.config/views/index.html';
+
+      try {
+        if (fs.existsSync(file)) {
+          response.render(file, request.details);    
+        } else {
+          response.render("index", request.details);    
+        }
+      } catch(err) {
+        console.error(err);
+        response.render("index", request.details);    
+      }
   });
 }
