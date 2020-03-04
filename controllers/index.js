@@ -1,3 +1,15 @@
+/********************************************************************
+ *
+ * CONTROLLERS: index.js ///
+ * 
+ * This is the main controller file called in app.js. It includes
+ * the other controllers and handles the main index file as well 
+ * as the /cusomcss route that forwards user-created CSS from
+ * the optional config directory.
+ *
+ *******************************************************************/
+
+// we're going to need this later to detect the optional files
 var fs = require('fs');
 
 module.exports = function (app, db) {
@@ -6,7 +18,10 @@ module.exports = function (app, db) {
   require(__dirname + '/embed.js')(app,db);
   require(__dirname + '/subscriptions.js')(app,db);
 
-  // serve domain root:
+  /****** ROUTE: / *************************************************/
+  // The main page. Will show user customized pages if present at
+  // /config/views/index.html and if not it will render the default
+  // page found at /views/index.html
   app.get("/", function(request, response) {
       request.details = {
         copy: {
@@ -15,7 +30,10 @@ module.exports = function (app, db) {
       };
     
       var file = __dirname + '/../config/views/index.html';
-
+      
+      // we're looking for the /config/views/index.html file — if 
+      // it's present we use that as our main view, if not we fall
+      // back to the default index.html in the /views folder
       try {
         if (fs.existsSync(file)) {
           response.render(file, request.details);    
@@ -28,9 +46,18 @@ module.exports = function (app, db) {
       }
   });
   
+  /****** ROUTE: /customcss *****************************************/
+  // Relays the contents of /config/public/css/custom.css (or blank
+  // if the file is not present.) This allows a user to place CSS 
+  // outsite of the app folders and in the /config folder like the
+  // custom homepage. Ultimately they just need to include a style
+  // tag pointed at the /customcss endpoint and their file will show.
   app.get("/customcss", function(request, response) {
     var file = __dirname + '/../config/public/css/custom.css';
 
+      // similar to the above, we're looking for the custom.css file
+      // in the user's /config/public/css folder. if present we 
+      // stream the contents, if not we return an empty file.
       try {
         if (fs.existsSync(file)) {
           var stat = fs.statSync(file);

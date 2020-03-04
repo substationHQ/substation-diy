@@ -74,8 +74,6 @@ module.exports.add = function(
           
             This shows we need to encode plus signs, but also we need 
             a fallback failure for any validation errors
-            
-            Related, but tangent: the form needs a progress indicator
           
             ErrorResponse {
               errors: ValidationErrorsCollection {
@@ -85,7 +83,7 @@ module.exports.add = function(
               params: {
                 customer: {
                   firstName: 'Jesse',
-                  lastName: 'James',
+                  lastName: 'von Doom',
                   email: 'jessevondoom heresanothertest@gmail.com',
                   paymentMethodNonce: 'tokencc_bc_yw3dp2_yff7gj_y3sbmy_77kstx_7z4',
                   creditCard: [Object]

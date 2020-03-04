@@ -1,5 +1,18 @@
+/********************************************************************
+ *
+ * CONTROLLERS: embed.js ///
+ * 
+ * Just the one endpoint for now, this controller renders the 
+ * interface for the sign-up/payment/cancel widget. Call this 
+ * endpoint and it renders out the HTML ready for an iframe, and
+ * including lodge embed code — so that iframe will resize 
+ * dynamically inside of a container on the embedding page if it
+ * uses lodge too. 
+ *
+ *******************************************************************/
+
 module.exports = function (app, db) {
-  // serve domain root:
+  /****** ROUTE: /embed ********************************************/
   app.get("/embed", function(request, response) {
     // set up braintree token for frontend javascript
     var braintree = require("braintree");
@@ -14,11 +27,15 @@ module.exports = function (app, db) {
       if (err) {
         console.log(err);
       } else {
-        //console.log(res);
-        var sandboxed = false;
+        // got the token so now we just need to set a few parameters
+        
+        var sandboxed = false; // default to live environment
         if (process.env.BRAINTREE_ENVIRONMENT == "Sandbox") {
+          // sandbox has been set to true in the .env file so 
+          // we set it true here
           sandboxed = true;
         }
+        // the rest is just filling in details for the view
         request.details = {
           braintree: {
             clientToken: res.clientToken,
