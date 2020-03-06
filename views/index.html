@@ -19,11 +19,13 @@
   <link rel="stylesheet" type="text/css" href="/normalize.css">
   <link rel="stylesheet" type="text/css" href="/skeleton.css">
   <link rel="stylesheet" type="text/css" href="/custom.css">
+  <link rel="stylesheet" type="text/css" href="/overlay.css">
+  <link rel="stylesheet" type="text/css" href="/customcss">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Flogo-bw-email.png?v=1579197689402">
-  <script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js" data-options="noembed" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.2.2/source/lodge.js" data-options="noembed" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -33,77 +35,142 @@
   <div class="section hero">
     <div class="container">
       <div class="row">
-          <h1>Start your own club today.</h1>
-          <h2>
-            SUBSTATION <span class="diy">DIY</span> <span class="logo">///</span>
-          </h2>
+        <h1>
+          Let's get started.
+        </h1>
+        <h2>
+          SUBSTATION <span class="diy">OVERVIEW</span> <span class="logo">///</span>
+        </h2>
       </div>
     </div>
   </div>
-
+  
   <div class="section more">
     <div class="container">
       <div class="row">
-        <div class="seven columns spacer">&nbsp;</div>
-        <div class="five columns spacer">
-          <div id="details">
-            <embed class="lodge" src="/embed">
-          </div>
-        </div>
-      </div>
-        
-      <div class="row">
-        <div class="three columns spacer">&nbsp;</div>
-        <div class="four columns spacer">
-          <div id="widget-copy">
-            <h4>Try it out</h4>
-            <p class="small">
-              Signup is easy for your people — test it yourself with this card number, and any date / CVV:<br />
-              <samp>4111 1111 1111 1111</samp>
-            </p>
-          </div>
-        </div>
-        <div class="five columns spacer">&nbsp;</div>
-      </div>
-        
-      <div class="row">
         <div class="one column">&nbsp;</div>
-        <div class="ten columns" id="body-copy">
+        <div class="ten columns" id="intro">
           <p>
-            Substation DIY is a free, open, and secure way to set up simple recurring payments and member messaging — 
-            as easily as pressing a remix button and adding credentials for Braintree and Mailgun. Try the demo, 
-            learn more, then remix your own!
-          </p><p class="small">
-            <ul class="small">
-              <li><span class="twitter"></span><a href="https://twitter.com/SubstationHQ">@SubstationHQ</a></li>
-              <li><span class="github"></span><a href="https://github.com/substation-me/">@substation-me</a></li>
-            </ul>
+            Substation DIY is a free, open, and secure way to set up simple membership clubs with 
+            recurring payments and an easy way to compose and send email to all members. 
+          </p><p>
+            Let's get it all set up!
           </p>
         </div>
         <div class="one column">&nbsp;</div>
       </div>
-        
+    
+      <div class="row">
+        <div class="one column">&nbsp;</div>
+        <div class="five columns">
+          <h2>The embed</h2>
+          <p>
+            The widget you see here is a simple embed:
+          </p>
+          <code class="embed">
+            &lt;!-- Substation embed code --&gt;
+            <br />
+            &lt;script src="https://cdn.jsdelivr.net/gh/substation-me/lodge@0.1/source/lodge.js"&gt;&lt;/script&gt;<br />
+            &lt;embed class="lodge" src="{{substationURL}}embed"&gt;<br />
+          </code>
+        </div>
+        <div class="five columns">
+          <div id="details">
+            <embed class="lodge" src="/embed">
+          </div>
+        </div>
+        <div class="one column">&nbsp;</div>
+      </div>
+      
+      <div class="row padded">
+        <div class="one column">&nbsp;</div>
+        <div class="ten columns">
+          <h2>
+            Getting things working.
+          </h2>
+          <p>
+            To get Substation DIY fully up and running you'll need a <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a> 
+            account to take payments, and a <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> account to send out mail. 
+          </p>
+          <p>
+            Once you have your accounts at Braintree and Mailgun you just need to edit the <samp>.env</samp> file in your Glitch project.
+            Here it is, step-by-step:
+          </p>
+          <ol>
+            <li>
+              Add an admin email and set the title and main URL (your glitch URL)<br />
+              <code>ADMIN_EMAIL=hello@substation.me</code><br />
+              <code>TITLE=Substation</code><br />
+              <code>URL=https://substation.glitch.me/</code>
+            </li>
+            <li>
+              Set the security secret. This can be anything no one will guess. Mash the keyboard even!<br />
+              <code>SECURITY_SECRET=seriouslyanythinglolololsdfjsicuy76Afb</code>
+            </li>
+            <li>
+              Finally, you need to add information from Braintree and Mailgun. Both need API keys and 
+              secrets. Mailgun needs a 'FROM' email address, and Braintree needs you to set up a 
+              subscription and add its ID, set the environment as <samp>Sandbox</samp> or <samp>Production</samp>,
+              and give a minimum amount for your monthly membership fee.
+            </li>
+          </ol>
+          <h2>
+            Customizing this page
+          </h2>
+          <p>
+            You can put the signup widget on any website, but if you want to customize
+            this one (or the email Substation sends) — well you can! Here's how:
+          </p>
+          <ol>
+            <li>Create a folder called <samp>/config</samp> at the top level of the app</li>
+            <li>For a custom homepage, create a file called <samp>/config/views/index.html</samp> — 
+               this will be shown instead of the default page</li>
+            <li>To add CSS create <samp>/config/public/custom.css</samp> — 
+              you can access this file as <a href="/customcss"><samp>/customcss</samp></a> from the domain root</li>
+            <li>You can also customize the email templates — 
+              <ul>
+                <li><samp>/config/views/email.html</samp> for the main email template</li>
+                <li><samp>/config/views/messages/login.html</samp>, unsubscribe.html, and welcome.html<br />
+                  <i>(For these we suggest starting with a copy of the default templates
+                  that are located in the main /views folder)</i></li>
+              </ul>
+            </li>
+          </ol>
+          <h2>
+            Just a few more things.
+          </h2>
+          <ul>
+            <li>
+              The admin dashboard is located at <a href="/dashboard"><samp>/dashboard</samp></a> — login there to see
+              current subscriber stats, get your embed code, export a member list,
+              or send email.
+            </li>
+            <li>
+              Don't worry if the <samp>/config</samp> folder disappears on you. It's hidden
+              using a <samp>.gitignore</samp> file so customizations don't get pushed on you. 
+              There are two easy fixes. To temporarily un-hide it, just edit
+              the one-line gitignore file so it doesn't match config/ anymore, 
+              refresh, then reload. You can change it back once you see the folder.
+              Or you can just delete the .gitignore file completely — the main
+              project needs it, but your remixes maybe don't?</li>
+            <li>
+              Need more than one admin login? Yeah us too. All you need is a little JSON wrapped in 
+              <code>$''</code> in your <samp>.env</samp> file. You can add any number of admin emails this way, like so:<br />
+              <code>ADMIN_EMAIL=$'["hello@substation.me","hi@substation.me"]'</code>
+            </li>
+            <li>
+              Want a nicer looking FROM address for Mailgun? Use the same <code>$''</code> trick:<br />
+              <code>MAILGUN_FROM_EMAIL=$'Substation &lt;hello@substation.me&gt;'</code>
+            </li>
+          </ul>
+        </div>
+        <div class="one column">&nbsp;</div>
+      </div>
     </div>
   </div>
 
   <div class="section footer">
     <div class="container">
-      <div class="row">
-        <div class="one column">&nbsp;</div>
-        <div class="three columns remix">
-          <a href="https://glitch.com/edit/#!/substation" class="button">Remix on Glitch</a> 
-        </div>
-        <div class="seven columns">
-          <p>
-            This page is just an example. Make Substation all your own, with free and easy hosting on Glitch. 
-            <a href="https://glitch.com/edit/#!/substation">Just click here to get started.</a> 
-            You'll need a Braintree account, a Mailgun account, and some basic html skills. You'll be running your
-            new club in no time.
-          </p>
-        </div>
-        <div class="one column">&nbsp;</div>
-      </div>
-      
       <div class="row">
         <div class="eight columns">&nbsp;</div>
         <div class="four columns corner">

@@ -14,6 +14,15 @@ body {
   font-family:'Arvo','helvetica neue',helvetica,arial,sans-serif;
 }
 
+code.embed {
+  display: block;
+  overflow: auto;
+}
+
+samp {
+  padding: 0 0.25em 0 0.25em;
+}
+
 h1,h2,h3,h4 {
   font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
   color:#000;
@@ -26,7 +35,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1.25em;
+  font-size: 1.75em;
   font-weight: bold;
 }
 
@@ -42,22 +51,10 @@ h4 {
   text-transform:uppercase;
 }
 
-ul {
-  list-style-type: none;
-  color: rgb(235, 219, 0);
-}
-
-li {
-  padding-left: 20px;
-}
-
-li .logo {
-  margin-right:0.75em;
-}
-
-li span {
-  color:#fff;
-  font-weight:400;
+ol, ul {
+   margin: 0;
+   padding: 1em;
+  list-style-position: outside;
 }
 
 span.logo {
@@ -72,38 +69,13 @@ span.diy {
   color:#1EAEDB;
 }
 
-span.glitch {
-  display: inline-block;
-  position: relative;
-  top: 8px;
-  margin-right: 8px;
-  width: 42px;
-  height: 42px;
-  background-size: cover;
-  border-radius: 21px;
-  background-image: url(https://cdn.glitch.com/38a30f29-aa18-44b4-a077-cecc038350a9%2Fglitched-glitch.png?v=1573670100233);
-}
-
-div.remix p {
-  padding-left:52px;
-}
-
-div.remix a.button {
-  background-color:#1EAEDB;
-  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
-}
-
-div.remix a.button:hover {
-  background-color: rgb(235, 219, 0);
-}
-
-div.section.more {
-  background-color: #000;
-}
-
 div.section.more div.seven.columns {
   padding-top: 36px;
   padding-bottom: 24px;
+}
+
+div.row.padded {
+  padding-top:3em;
 }
 
 .small {
@@ -114,7 +86,6 @@ div.section.more div.seven.columns {
   height:1px;
   overflow: visible;
 }
-
 
 /* unsubscribe  */
 
@@ -151,17 +122,6 @@ form {
   font-weight:200;
   width: 100%;
 }
-
-/*
-input[type=text] {
-  font-family: system-ui;
-  font-weight: 400;
-  padding: 12px;
-  font-size: 16px;
-  line-height: 24px;
-  color: rgb(40, 44, 55);
-}
-*/
   
 a.button, button, input[type=submit], input[type=button] {
   font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
@@ -194,72 +154,21 @@ button:disabled, input[type=button]:disabled {
 }
 
 
-/* hero */
-.hero {
-  padding: 10em 0 12em 0;
-  background: bottom center no-repeat url(https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Fhero.jpg?v=1580922576463);
-}
-
-
-/* loading */
-#substation-loading {
-  position:absolute;
-  top:50%;
-  left:50%;
-  margin-left:-27px;
-  margin-top:-24px;
-  width: 55px;
-  height:48px;
-}
-
-
 /* body */
-#body-copy {
-  padding:2em 0 1.5em 0;
-  color:#fff;
-  font-size:1.125em;
+.hero {
+  padding: 4em 0 0 0;
+  background-image: none;
 }
 
-#body-copy a {
-  text-decoration: none;
+#intro {
+  padding:3.5em 0 3.5em 0;
+  font-size:1.25em;
 }
-
-#body-copy li {
-  display: inline-block;
-  margin-right:1.5em;
-  margin-left:-1.5em;
-}
-
-#body-copy li span {
-  display: inline-block;
-  position: relative;
-  top: 9px;
-  margin-right: 0.5em;
-  width: 24px;
-  height: 24px;
-  background-size: cover;
-  border-radius: 12px;
-}
-
-span.twitter {
-  background-image: url(https://abs.twimg.com/responsive-web/web/icon-ios.8ea219d08eafdfa44.png);
-}
-
-span.github {
-  background-image: url(https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Fgithub-logo.png?v=1580955140729);
-}
-
-
 
 /* footer */
 .footer {
   font-size:0.8em;
   padding: 6% 0 3% 0;
-}
-
-.footer li {
-  line-height: 24px;
-  padding-left: 0;
 }
 
 .corner {
@@ -269,141 +178,15 @@ span.github {
 }
 
 /*subscription widget*/
-
-#widget-copy {
-  position: relative;
-  top:-11em;
-  right:-1em;
-  text-align:right;
-}
-
-#details {
-  position: relative;
+iframe.vv-embed {
   box-shadow: -2px 2px 4px rgba(0,0,0,0.3);
   border-radius: 9px;
-  top:-9em;
-}
-
-.subscription-widget {
-  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
-  background-color:#fff;
-  box-shadow: -2px 2px 4px rgba(0,0,0,0.3);
-  margin-bottom:3em;
-  border-radius: 9px;
-  overflow:hidden;
-}
-
-.checkout-button {
-  display: flex;
-  padding: 16px;
-  position:relative;
-  justify-content:space-between;
-}
-
-.checkout-button input {
-  line-height:16px;
-  min-width:7em;
-  flex-basis:40%;
-  padding:1rem 1rem 1rem 2rem;
-  height:48px;
-  position:relative;
-}
-.checkout-button::before {
-  content:'$';
-  display:block;
-  height: 48px;
-  z-index:10;
-  color: #666;
-  line-height:16px;
-  padding:16px 0 0;
-  background:transparent;
-  position: absolute;
-  top:16px;
-  left:1.5em;
-}
-
-.checkout-button button {
-  height:48px;
-  flex-basis:55%;
-  transition:all 0.2s ease;
-}
-.checkout-button input:focus {
-  box-shadow: 0 0 8px rgba(100,193,235,0.5);
-}
-
-.fine-print, .sandbox-mode {
-  background: rgba(85,102,119,1);
-  padding: 16px;
-  font-size: 12px;
-  line-height: 14px;
-  color:#ccc;
-}
-
-.sandbox-mode {
-  background: rgba(235,219,0,1);
-  background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,0,0.5) 15px, rgba(255,255,0,0.5) 30px);
-  padding: 8px 16px;
-  color:#222;
-}
-
-/* overlays and checkout */
-.vv-overlay {
-  background: rgba(31,31,41, 0.95) !important;
-}
-.vv-overlay h2 {
-  color: #fff;
-}
-#braintree-token-form input#button-pay.show-button {
-  background: mediumseagreen !important;
-  cursor:pointer;
-}
-#braintree-token-form input#button-pay.show-button:hover {
-  background: yellow !important;
-  color: black;
-}
-#braintree-token-form input#button-pay[disabled] {
-  background: #666 !important;
-  color: #999;
-  cursor: auto;
-}
-
-
-/* admin dashboard */
-#admin-login input[type=email] {
-  width: 100%;
-  height: 48px;
 }
 
 
 /* Smaller than 635 */
 @media (max-width: 635px) {
-  .checkout-button {
-    flex-wrap:wrap;
-  }
-  .checkout-button input,
-  .checkout-button button {
-    flex-basis:100%;
-    width:100%;
-    clear: both;
-  }
-  
-  #widget-copy {
-    top:0;
-    right:0;
-    padding-top:6em;
-    text-align:left;
-    color:#fff;
-  }
-  
-  #widget-copy h4 {
-    color:#fff;
-  }
-
-  #details {
-    position: relative;
-    top:-11em;
-  }
-  
+ 
   #body-copy {
     padding:12em 0 1.5em 0;
   }
@@ -412,30 +195,9 @@ span.github {
 
 @media (min-width:636px) and (max-width:960px) {
 
-  .checkout-button {
-    flex-wrap:wrap;
-  }
-  .checkout-button input,
-  .checkout-button button {
-    flex-basis:100%;
-    width:100%;
-    clear: both;
-  }
-  
   #body-copy {
     padding:5em 0 1.5em 0;
   }
   
 }
 
-
-@media (min-width:961px) {
-  
-  .checkout-button input {
-    flex-basis:40%;
-  }
-
-  .checkout-button button {
-    flex-basis:55%;
-  }
-}

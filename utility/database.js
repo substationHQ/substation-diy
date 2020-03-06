@@ -1,6 +1,7 @@
-/*********************************************************************
+/********************************************************************
  *
- * DATABASE SETUP
+ * UTILITY: database.js ///
+ * 
  * The database is only used for issuing one-time nonce tokens to
  * verify a user either for login or for unsubscribe.
  *
@@ -10,10 +11,16 @@
  * some server fluke a user needs only retry their login/unsubscribe
  * request and it will set itself up again.
  *
- *********************************************************************/
+ * This module either initializes or connects to our SQLite db in 
+ * the hidden .data/ directory.
+ *
+ *******************************************************************/
+
+// set up what we need for the db
 var sqlite3 = require("sqlite3").verbose();
 var dbFile = __dirname + "/../.data/sqlite.db";
 
+// connect to things and set the db object
 let db = new sqlite3.Database(dbFile, sqlite3.OPEN_READWRITE, function(err) {
   if(err) {
     // can't open database
@@ -26,4 +33,6 @@ let db = new sqlite3.Database(dbFile, sqlite3.OPEN_READWRITE, function(err) {
   }
 });
 
+// export the db object so it's available whenever this script is
+// required elsewhere.
 module.exports = db;

@@ -3,10 +3,6 @@ Substation
 Using Braintree, Mailgun, and a little bit of glue to build a basic subscription / fan club.
    
   
-Getting started
----------------
-User customization intro: TBD
-  
 Project structure
 -----------------
 Substation on Glitch is pretty minimal: a basic Node+Express setup, Braintree for payment 
@@ -30,6 +26,12 @@ any view/HTML.)
 
 Lastly, the overlays all live as part of the Lodge library. They're made to be responsive and
 secure cross-domain, so ultimately we'll host stable versions of Lodge on a CDN.
+
+Getting started
+---------------
+See the detault index.html view — it's the default page that you see when you launch a new
+page! It steps you through setting up the .env file, customizing the pages, using the embed,
+and a few other helpful tips.
 
 Collaborating on Glitch
 -----------------------
