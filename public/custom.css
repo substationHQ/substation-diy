@@ -14,6 +14,15 @@ body {
   font-family:'Arvo','helvetica neue',helvetica,arial,sans-serif;
 }
 
+code.embed {
+  display: block;
+  overflow: auto;
+}
+
+samp {
+  padding: 0 0.25em 0 0.25em;
+}
+
 h1,h2,h3,h4 {
   font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
   color:#000;
@@ -26,7 +35,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1.25em;
+  font-size: 1.75em;
   font-weight: bold;
 }
 
@@ -42,17 +51,10 @@ h4 {
   text-transform:uppercase;
 }
 
-ul {
-  list-style-type: none;
-  color: rgb(235, 219, 0);
-}
-
-li {
-  padding-left: 20px;
-}
-
-li .logo {
-  margin-right:0.75em;
+ol, ul {
+   margin: 0;
+   padding: 1em;
+  list-style-position: outside;
 }
 
 span.logo {
@@ -70,6 +72,10 @@ span.diy {
 div.section.more div.seven.columns {
   padding-top: 36px;
   padding-bottom: 24px;
+}
+
+div.row.padded {
+  padding-top:3em;
 }
 
 .small {
@@ -154,32 +160,10 @@ button:disabled, input[type=button]:disabled {
   background-image: none;
 }
 
-#body-copy {
-  padding:2em 0 1.5em 0;
-  font-size:1.125em;
+#intro {
+  padding:3.5em 0 3.5em 0;
+  font-size:1.25em;
 }
-
-#body-copy a {
-  text-decoration: none;
-}
-
-#body-copy li {
-  display: inline-block;
-  margin-right:1.5em;
-  margin-left:-1.5em;
-}
-
-#body-copy li span {
-  display: inline-block;
-  position: relative;
-  top: 9px;
-  margin-right: 0.5em;
-  width: 24px;
-  height: 24px;
-  background-size: cover;
-  border-radius: 12px;
-}
-
 
 /* footer */
 .footer {

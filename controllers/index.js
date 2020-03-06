@@ -24,6 +24,7 @@ module.exports = function (app, db) {
   // page found at /views/index.html
   app.get("/", function(request, response) {
       request.details = {
+        substationURL: process.env.URL,
         copy: {
           title: process.env.TITLE
         }
@@ -70,6 +71,9 @@ module.exports = function (app, db) {
           var readStream = fs.createReadStream(file);
           readStream.pipe(response);
         } else {
+          response.writeHead(200, {
+              'Content-Type': 'text/css'
+          });
           response.end();
         }
       } catch(err) {
