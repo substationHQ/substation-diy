@@ -22,29 +22,29 @@ module.exports = function (app, db) {
   // The main page. Will show user customized pages if present at
   // /config/views/index.html and if not it will render the default
   // page found at /views/index.html
-  app.get("/", function(request, response) {
-      request.details = {
-        substationURL: process.env.URL,
-        copy: {
-          title: process.env.TITLE
-        }
-      };
-    
-      var file = __dirname + '/../config/views/index.html';
-      
-      // we're looking for the /config/views/index.html file — if 
-      // it's present we use that as our main view, if not we fall
-      // back to the default index.html in the /views folder
-      try {
-        if (fs.existsSync(file)) {
-          response.render(file, request.details);    
-        } else {
-          response.render("index", request.details);    
-        }
-      } catch(err) {
-        console.error(err);
-        response.render("index", request.details);    
+  app.get(["/","/docs/gettingstarted"], function(request, response) {
+    request.details = {
+      substationURL: process.env.URL,
+      copy: {
+        title: process.env.TITLE
       }
+    };
+
+    var file = __dirname + '/../config/views/index.html';
+
+    // we're looking for the /config/views/index.html file — if 
+    // it's present we use that as our main view, if not we fall
+    // back to the default index.html in the /views folder
+    try {
+      if (fs.existsSync(file) && request.originalUrl == '/') {
+        response.render(file, request.details);    
+      } else {
+        response.render("docs/gettingstarted", request.details);    
+      }
+    } catch(err) {
+      console.error(err);
+      response.render("docs/gettingstarted", request.details);    
+    }
   });
   
   /****** ROUTE: /customcss *****************************************/
