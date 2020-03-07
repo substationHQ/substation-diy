@@ -33,6 +33,10 @@ See the detault index.html view — it's the default page that you see when you 
 page! It steps you through setting up the .env file, customizing the pages, using the embed,
 and a few other helpful tips.
 
+The getting started guide is also available at the 
+[/docs/gettingstarted](https://substation.glitch.me/docs/gettingstarted) route in your 
+Substation DIY app.
+
 Collaborating on Glitch
 -----------------------
 Glitch, while based on git, is different from a traditional git development environment. The
