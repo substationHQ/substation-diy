@@ -112,19 +112,19 @@ module.exports.sendMessage = function(
       // the email wrapper. that means more checks and the same 
       // basic process again.
       details.copy = contents;
-      var email = __dirname + '/../config/views/email.html';
+      var template = __dirname + '/../config/views/email.html';
       try {
-        if (!fs.existsSync(email)) {
+        if (!fs.existsSync(template)) {
           // no custom email view, so use the default one!
-          email = 'email';  
+          template = 'email';  
         }
       } catch(err) {
         // error. use the default view.
         console.error(err);
-        email = 'email';
+        template = 'email';
       }
       // render the contents with our chosen email view
-      app.render(email, details, function (err, html) {
+      app.render(template, details, function (err, html) {
         if (err) {
           console.log("messaging.sendTransactional: " + err);
         } else {
