@@ -17,7 +17,7 @@ Most of the project settings are in the .env file — the idea being that anyon
 remix Substation needs only edit the .env with their own Braintree/Mailgun keys and a few 
 details to get started. 
 
-The package.json file sets up the server envoronment, installs NPM modules, etc. The actual 
+The package.json file sets up the server environment, installs NPM modules, etc. The actual 
 server lives in server.js — a mostly simple setup and simple in structure. In time we probably 
 want to refactor with a few external objects but as of now it's working as a single script. 
 All views are kept in the views/ folder, while static public files are hosted in the public/
@@ -29,7 +29,7 @@ secure cross-domain, so ultimately we'll host stable versions of Lodge on a CDN.
 
 Getting started
 ---------------
-See the detault index.html view — it's the default page that you see when you launch a new
+See the default index.html view — it's the default page that you see when you launch a new
 page! It steps you through setting up the .env file, customizing the pages, using the embed,
 and a few other helpful tips.
 
@@ -56,7 +56,7 @@ Nutshell: it'll take some getting used to, but it's great for a first sprint. We
 setting up a github account for two-way sync and storing release candidates.
 
 Misc details:
-  - Tools are a little ard to find, but look below the file list to the left. The "Tools ^" 
+  - Tools are a little hard to find, but look below the file list to the left. The "Tools ^" 
     button is your friend. You'll find the server logs, debugger, and more
   - The << rewind button to the left of Tools will help you get back to a previous state 
     if something goes wrong — literally browse through git commits
