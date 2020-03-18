@@ -37,6 +37,14 @@ The getting started guide is also available at the
 [/docs/gettingstarted](https://substation.glitch.me/docs/gettingstarted) route in your 
 Substation DIY app.
 
+Updating
+--------
+As long as you've used the .config/ folder for all customizations, as covered in the Getting
+Started docs, you can easily update to the latest version of Substation on Glitch. Just click
+the "Tools ^" button in the lower left corner of the Glitch editor, now select "Git, Import,
+and Export", then "Import from Github", and use the repo "substation-me/substation-diy" when
+prompted.
+
 Collaborating on Glitch
 -----------------------
 Glitch, while based on git, is different from a traditional git development environment. The
