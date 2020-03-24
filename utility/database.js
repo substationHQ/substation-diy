@@ -17,13 +17,8 @@
  *******************************************************************/
 
 // set up what we need for the db
-var fs = require('fs');
 var sqlite3 = require("sqlite3").verbose();
 var dbFile = __dirname + "/../.data/sqlite.db";
-
-if (!fs.existsSync(__dirname + "/../.data")){
-    fs.mkdirSync(__dirname + "/../.data");
-}
 
 // connect to things and set the db object
 let db = new sqlite3.Database(dbFile, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, function(err) {
