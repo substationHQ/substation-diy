@@ -66,7 +66,8 @@ app.use(csp({
 // parse every kind of request automatically — the 24mb limit
 // is pretty arbitrary, but it's important it's large enough for
 // email attachments encoded over http.
-app.use(bodyParser.urlencoded({limit: '24mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '24mb', extended: true}));
+app.use(bodyParser.json());
 
 // directly serve static files from the public folder
 app.use(express.static(__dirname + "/../public"));
