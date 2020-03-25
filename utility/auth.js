@@ -44,8 +44,44 @@ module.exports.validateNonce = function(email, nonce, callback) {
   );
 }
 
-/****** FUNCTION: auth.validateAPISecret() *************************/
-// Placeholder.
-module.exports.validateAPISecret = function(email, signature, callback) {
+/****** FUNCTION: auth.getAPISecrets() *****************************/
+// 
+module.exports.getAPISecrets = function() {
+  var users = require(__dirname + "/../models/users.js");
+  var crypto = require('crypto');
+  var admins = users.getAdminUsers();
+  var secrets = {};
+  admins.forEach(function(admin){
+    secrets[admin] = crypto.createHash('sha256').update(admin + process.env.SECURITY_SECRET).digest('hex').substr(0,24);
+  });
+  return secrets;
+}
+
+/****** FUNCTION: auth.validateAPIToken() **************************/
+// 
+module.exports.validateAPIToken = function(request, response, next) {
+  var jwt = require('jsonwebtoken');
+  var users = require(__dirname + "/../models/users.js");
   
+  var token = request.headers['x-access-token'];
+  if (!token) {
+    response.status(403).send({ auth: false, message: 'No token provided.' });
+  } else {  
+    jwt.verify(token, process.env.SECURITY_SECRET, function(err, decoded) {
+      if (err) {
+        response.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+      } else {
+        // if everything good, save to request for use in other routes
+        request.email = decoded.email;
+
+        // now check for admin persmissions
+        if (!users.isAdmin(request.email)) {
+          response.status(401).send({ auth: false, message: 'Unauthorized.' });
+        } else {
+          // whew! next.
+          next(); 
+        }
+      }
+    });
+  }
 }
