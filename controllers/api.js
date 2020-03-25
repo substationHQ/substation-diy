@@ -33,16 +33,21 @@ module.exports = function(app, db) {
   });
   
   app.get("/api/v:version/login", auth.validateAPIToken, function(request, response) {
-    if(!request.query.email || !request.query.redirect) {
+    if(!request.query.email || !request.query.message || !request.query.redirect) {
       response.status(400).send({ auth: false, message: 'Bad request.' });
-    } 
+    } else {
+      
+    }
   });
   
-  app.get("/api/v:version/members", auth.validateAPIToken, function(request, response) {
+  app.get("/api/v:version/member", auth.validateAPIToken, function(request, response) {
     response.status(200).send({"auth":true,"worked": "yay!"});
-    if(request.query.email) {
-      //response.status(401).send({ auth: false, message: 'Unauthorized.' });
-    } 
+    if(!request.query.email) {
+      response.status(400).send({ auth: false, message: 'Bad request.' });
+    } else {
+      // email is explicitly included, so we just want to check if the member is 
+      // in good standing and return a boolean to the API user 
+    }
   });
   
 };

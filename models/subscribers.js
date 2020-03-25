@@ -231,7 +231,43 @@ module.exports.getActive = function(callback) {
 // (string)   email
 // (function) callback(err,result)
 module.exports.remove = function(email, callback) {
-  // TODO: can't get the customers as an iterable array/object
+  
+  module.exports.isActive(email,function(err, sub) {
+    if (err) {
+      callback(err, null);
+    } else {
+      if (sub) {
+        // the "sub" if true is the subscription id for
+        // the specific user subsription relationship
+        gateway.subscription.cancel(sub, function(
+          err,
+          result
+        ) {
+          if (err) {
+            // dang. return the error
+            callback(err, null); 
+          } else {
+            // it was a success! 
+            callback(null, result); 
+          }
+        });
+      } else {
+        // not an active subscriber, but the goal was to remove
+        // the member from the list so we return true as in 
+        // "this member is not a part of the subscription"
+        // by leaving a message this state can be explicitly
+        // checked for should that be needed.
+        callback(null, "Member not associated with plan."); 
+      }
+    }
+  });
+};
+
+/****** FUNCTION: subscribers.validate() ****************************/
+// Placeholder. Want to be able to say "does this email belong to an
+// active member?" and return a boolean.
+module.exports.isActive = function(email, callback) {
+  // FWIW: can't get the customers as an iterable array/object
   // so we wind up in this nested loopsy upside-down stream place.
   // Technically we're fine. There should only be ONE match for
   // any given email, but that doesn't feel like a solid or stable
@@ -266,6 +302,7 @@ module.exports.remove = function(email, callback) {
               ii++
             ) {
               var card = customer.creditCards[ii];
+              var active = false;
               // more loooooooooooooooooooooooops (subscriptions)
               for (
                 var iii = 0, le = card.subscriptions.length;
@@ -279,24 +316,17 @@ module.exports.remove = function(email, callback) {
                   subscription.status == "Active" &&
                   subscription.planId == process.env.BRAINTREE_PLAN_ID
                 ) {
-                  // finally we can call the actual cancel action
-                  gateway.subscription.cancel(subscription.id, function(
-                    err,
-                    result
-                  ) {
-                    // it was a success! 
-                    callback(null, result);
-                  });
-                } else {
-                  // subscription already canceled
-                  //
-                  // show the success message — this is a funny situation 
-                  // as there's a time where the user can cancel their sub 
-                  // but still be seen as 'active' until their subscription 
-                  // period ends. better to reassure the user than give a
-                  // false error message if they're trying a second time...
-                  callback(null, true);
+                    // if true, return the member's subscription ID as true
+                    callback(null, subscription.id);
+                    active = true;
+                    break;
                 }
+              }
+              if (!active) {
+                // return no error, but give false status — this shows
+                // we found a user, but they are not subscribed to the 
+                // current plan
+                callback(null, false);
               }
             }
           }
@@ -304,12 +334,4 @@ module.exports.remove = function(email, callback) {
       }
     }
   );
-};
-
-/****** FUNCTION: subscribers.validate() ****************************/
-// Placeholder. Want to be able to say "does this email belong to an
-// active member?" and return a boolean.
-module.exports.validate = function(email, callback) {
-  // TODO: check email address against active subscribers to
-  //       validate the subscriber email
 };

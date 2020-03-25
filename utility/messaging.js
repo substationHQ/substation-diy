@@ -55,7 +55,7 @@ module.exports.sendMessage = function(
   url
 ) {
   var nonce = '';
-  if (message == 'login' || message == 'usubscribe') {
+  if (message == 'login' || message == 'unsubscribe') {
     // quickly generate a nonce
     nonce = uuidv1();
     // assume we need the return, so store it in db
