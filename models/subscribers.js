@@ -232,14 +232,14 @@ module.exports.getActive = function(callback) {
 // (function) callback(err,result)
 module.exports.remove = function(email, callback) {
   
-  module.exports.isActive(email,function(err, sub) {
+  module.exports.isActive(email,function(err, member) {
     if (err) {
       callback(err, null);
     } else {
-      if (sub) {
+      if (member) {
         // the "sub" if true is the subscription id for
         // the specific user subsription relationship
-        gateway.subscription.cancel(sub, function(
+        gateway.subscription.cancel(member.vendorSubID, function(
           err,
           result
         ) {
@@ -317,7 +317,12 @@ module.exports.isActive = function(email, callback) {
                   subscription.planId == process.env.BRAINTREE_PLAN_ID
                 ) {
                     // if true, return the member's subscription ID as true
-                    callback(null, subscription.id);
+                    callback(null, {
+                      firstName: "",
+                      lastName: "",
+                      vendorSubID: subscription.id,
+                      active: true
+                    });
                     active = true;
                     break;
                 }
