@@ -285,6 +285,12 @@ module.exports.isActive = function(email, callback) {
         callback(err, null);
       } else {
         customers.each(function(err, customer) {
+          // TODO: this weird "each" construction is necessary because of  
+          // the Braintree API, but will throw an error if two customers
+          // exist with the same email address. Should only occur in 
+          // error conditions so not fixing at present, but early
+          // Substation development did create multiple customers with
+          // the same email address. Worth looking at a long-term fix.
           if (err) {
             callback(err, null);
           } else {
@@ -318,13 +324,12 @@ module.exports.isActive = function(email, callback) {
                 ) {
                     // if true, return the member's subscription ID as true
                     callback(null, {
-                      firstName: "",
-                      lastName: "",
+                      firstName: customer.firstName,
+                      lastName: customer.lastName,
                       vendorSubID: subscription.id,
                       active: true
                     });
                     active = true;
-                    break;
                 }
               }
               if (!active) {

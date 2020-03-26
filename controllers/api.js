@@ -64,7 +64,7 @@ module.exports = function(app, db) {
         if (err) {
           response.status(500).send({active: false, message: 'Error retreiving member data.'});
         } else {
-          if (member) {
+          if (!member) {
             // member is not active, so we don't send anything over API
             response.status(200).send({active:false});
           } else {
