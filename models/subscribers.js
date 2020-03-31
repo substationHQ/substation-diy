@@ -232,7 +232,7 @@ module.exports.getActive = function(callback) {
 // (function) callback(err,result)
 module.exports.remove = function(email, callback) {
   
-  module.exports.isActive(email,function(err, member) {
+  module.exports.getStatus(email,function(err, member) {
     if (err) {
       callback(err, null);
     } else {
@@ -266,7 +266,7 @@ module.exports.remove = function(email, callback) {
 /****** FUNCTION: subscribers.validate() ****************************/
 // Placeholder. Want to be able to say "does this email belong to an
 // active member?" and return a boolean.
-module.exports.isActive = function(email, callback) {
+module.exports.getStatus = function(email, callback) {
   // FWIW: can't get the customers as an iterable array/object
   // so we wind up in this nested loopsy upside-down stream place.
   // Technically we're fine. There should only be ONE match for

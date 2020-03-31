@@ -20,7 +20,6 @@
  *
  *******************************************************************/
 
-var db = require(__dirname + "/database.js");
 var fs = require('fs');
 //var mailgen = require("mailgen");
 var mailgun = require("mailgun-js");
@@ -30,9 +29,6 @@ var mg = mailgun({
   apiKey: process.env.MAILGUN_API_KEY,
   domain: process.env.MAILGUN_DOMAIN
 });
-
-// enable basic uuids for a little later
-var { v1: uuidv1 } = require('uuid');
 
 
 /****** FUNCTION: messaging.sendMessage() **************************/
@@ -52,10 +48,15 @@ module.exports.sendMessage = function(
   title,
   message,
   buttontext,
-  url
+  url,
+  redirecturl
 ) {
   var nonce = '';
   if (message == 'login' || message == 'unsubscribe') {
+    // TODO: CENTRALIZE NONCE GEN IN auth.js
+    // enable basic uuids for a little later
+    var { v1: uuidv1 } = require('uuid');
+    var db = require(__dirname + "/database.js");
     // quickly generate a nonce
     nonce = uuidv1();
     // assume we need the return, so store it in db
@@ -90,6 +91,9 @@ module.exports.sendMessage = function(
       "url":url + "?email=" + email + "&nonce=" + nonce,
       "copy":buttontext
     };
+  }
+  if (details.showbutton && redirecturl) {
+    details.button.url += "&redirect=" + redirecturl;
   }
   
   // select the correct view and prep the outgoing email

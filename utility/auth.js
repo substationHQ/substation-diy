@@ -13,6 +13,31 @@
 var db = require(__dirname + '/database.js');
 
 
+/****** FUNCTION: auth.generateNonce() *****************************/
+// Looks at email+nonce pairings in the database and checks them
+// against a given input, expecting:
+// (string)   email
+// (function) callback(err,result)
+module.exports.generateNonce = function(email, callback) {
+  /*
+  // enable basic uuids for a little later
+  var { v1: uuidv1 } = require('uuid');
+  var db = require(__dirname + "/database.js");
+  // quickly generate a nonce
+  var nonce = uuidv1();
+  // assume we need the return, so store it in db
+  db.serialize(function() {
+    db.run(
+      'INSERT INTO Nonces (email, nonce) VALUES ("' +
+        email +
+        '","' +
+        nonce +
+        '")'
+    );
+  });
+  */
+}
+
 /****** FUNCTION: auth.validateNonce() *****************************/
 // Looks at email+nonce pairings in the database and checks them
 // against a given input, expecting:

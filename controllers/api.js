@@ -33,10 +33,11 @@ module.exports = function(app, db) {
   });
   
   app.get("/api/v:version/login", auth.validateAPIToken, function(request, response) {
-    if(!request.query.email || !request.query.message || !request.query.redirect) {
+    if(!request.query.email || !request.query.redirect) {
       response.status(400).send({message: 'Bad request.'});
     } else {
       /*
+        FULL LOGIN FLOW (ISH) - DOCUMENT THIS SHIT BETTER
         1. API client requests token, uses it to request a login for a member
         2. The /login endpoint takes member email, a login message to be included
            in the login email, and a redirect URL back to teh API client
@@ -49,6 +50,74 @@ module.exports = function(app, db) {
            API token, trades the email and nonce back to the API server for
            confirmation of successful login
       */
+      var mailer = require(__dirname + "/../utility/messaging.js");
+      var url = require('url');
+      var redirectURL = new URL(request.query.redirect);
+      mailer.sendMessage(
+        app,
+        request.query.email,
+        "Log in to " + process.env.TITLE,
+        "Just click to login. You will be redirected to <u>" + redirectURL.hostname + "</u> after your login is complete.",
+        "login",
+        "Log in now",
+        process.env.URL + "api/v" + request.params.version + "/login/finalize",
+        encodeURI(request.query.redirect)
+      );
+      response.status(200).send({loginRequested:true});
+    }
+  });
+  
+  app.get("/api/v:version/login/finalize", function(request, response) {
+    if(!request.query.email || !request.query.nonce || !request.query.redirect) {
+      response.status(400).send({message: 'Bad request.'});
+    } else {
+      auth.validateNonce(
+        request.query.email,
+        request.query.nonce,
+        function(err, data) {
+          if (data) {
+            // TODO: CENTRALIZE NONCE GEN IN auth.js
+            // we're generating a second nonce to use as verification of this request
+            // the client will get the email/nonce and a true result from /api/verify 
+            // will verify that it was a true request processed by substation
+            var { v1: uuidv1 } = require('uuid');
+            var db = require(__dirname + "/../utility/database.js");
+            // quickly generate a nonce
+            var nonce = uuidv1();
+            // assume we need the return, so store it in db
+            db.serialize(function() {
+              db.run(
+                'INSERT INTO Nonces (email, nonce) VALUES ("' +
+                  request.query.email +
+                  '","' +
+                  nonce +
+                  '")'
+              );
+            });
+            response.redirect(request.query.redirect + '?substation-email=' + request.query.email + '&substation-nonce=' + nonce);
+          } else {
+            response.redirect(request.query.redirect + '?substation-email=' + request.query.email);
+          }
+        }
+      );
+    }
+  });
+  
+  app.get("/api/v:version/login/verify", auth.validateAPIToken, function(request, response) {
+    if(!request.query.email || !request.query.nonce) {
+      response.status(400).send({message: 'Bad request.'});
+    } else {
+      auth.validateNonce(
+        request.query.email,
+        request.query.nonce,
+        function(err, data) {
+          if (data) {
+            response.status(200).send({message: 'Success.',login:true});
+          } else {
+            response.status(401).send({message: 'Unauthorized.',login:false});  
+          }
+        }
+      );
     }
   });
   
@@ -58,9 +127,9 @@ module.exports = function(app, db) {
     if(!request.query.email) {
       response.status(400).send({message: 'Bad request.'});
     } else {
-      // the "true" for isActive() is an object with first name, last name, 
+      // the "true" for getStatus() is an object with first name, last name, 
       // active status, and the vendor subscription id
-      subscribers.isActive(request.query.email,function(err, member) {
+      subscribers.getStatus(request.query.email,function(err, member) {
         if (err) {
           response.status(500).send({active: false, message: 'Error retreiving member data.'});
         } else {
