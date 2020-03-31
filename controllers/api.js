@@ -2,17 +2,47 @@
  *
  * CONTROLLERS: api.js ///
  * 
- * Work in progress.
+ * Handles the API interface, issuing only JSON responses. The API
+ * itself is not complex, so in the interest of security each API 
+ * token only has a 5 minute lifetime. The tokens are formatted as 
+ * JSON web tokens with the expectation that a new token will be 
+ * requested for each new request. Those tokens are passed back to
+ * the API in an x-access-token header which is verified by a 
+ * middleware which lives in auth.js
+ *
+ * The API itself serves a few core use cases around validating 
+ * users as being in good standing or initiating a new user login
+ * with a special redirect parameter added to pass the login status
+ * (with a verification step) on to an external client.
+ *
+ * Each API call includes a version number. These are not currently
+ * doing anything, but will allow us to make changes down the road
+ * while supporting old versions, etc.
  *
  *******************************************************************/
 var auth = require(__dirname + "/../utility/auth.js");
 var jwt = require('jsonwebtoken');
 
 module.exports = function(app, db) {
+  /****** ROUTE: /metadata (GET) ***********************************/
+  // A basic route that gives the title of this Substation instance
+  // and parrots the version number requested in the URI.
   app.get("/api/v:version/metadata", auth.validateAPIToken, function(request, response) {
     response.status(200).send({ owner: process.env.TITLE, version: request.params.version });
   });
   
+  /****** ROUTE: /token (GET) **************************************/
+  // Takes an email and secret FROM A SECURE CLIENT — do not use 
+  // this in a front-end script as it will reveal your password and
+  // make you have to change your security secret and generally be
+  // really dumb and bad.
+  //
+  // The JSON response will attach the token to its token parameter
+  // (Duh.) and the client should then pass it as the value of the 
+  // x-access-token HTTP header as it makes a full API request.
+  //
+  // Note: this route DOES NOT use the token validation middleware
+  //       because there is no token yet. Obvs.
   app.get("/api/v:version/token", function(request, response) {
     var users = require(__dirname + "/../models/users.js");
     if(!request.query.email || !request.query.secret || !users.isAdmin(request.query.email)) {
@@ -32,6 +62,11 @@ module.exports = function(app, db) {
     }
   });
   
+  /****** ROUTE: /login (GET) **************************************/
+  // Takes an email and secret FROM A SECURE CLIENT — do not use 
+  // this in a front-end script as it will reveal your password and
+  // make you have to change your security secret and generally be
+  // really dumb and bad.
   app.get("/api/v:version/login", auth.validateAPIToken, function(request, response) {
     if(!request.query.email || !request.query.redirect) {
       response.status(400).send({message: 'Bad request.'});
@@ -50,23 +85,50 @@ module.exports = function(app, db) {
            API token, trades the email and nonce back to the API server for
            confirmation of successful login
       */
-      var mailer = require(__dirname + "/../utility/messaging.js");
-      var url = require('url');
-      var redirectURL = new URL(request.query.redirect);
-      mailer.sendMessage(
-        app,
-        request.query.email,
-        "Log in to " + process.env.TITLE,
-        "Just click to login. You will be redirected to <u>" + redirectURL.hostname + "</u> after your login is complete.",
-        "login",
-        "Log in now",
-        process.env.URL + "api/v" + request.params.version + "/login/finalize",
-        encodeURI(request.query.redirect)
-      );
-      response.status(200).send({loginRequested:true});
+      var subscribers = require(__dirname + "/../models/subscribers.js");
+            
+      // first we check to ensure the subscriber is in good standing
+      subscribers.getStatus(request.query.email,function(err, member) {
+        if (err) {
+          response.status(500).send({active: false, message: 'Error retreiving member data.'});
+        } else {
+          if (!member) {
+            // send a nope
+            response.status(401).send({message: 'Unauthorized.',login:false});
+          } else {
+            var mailer = require(__dirname + "/../utility/messaging.js");
+            var url = require('url');
+            var redirectURL = new URL(request.query.redirect);
+            mailer.sendMessage(
+              app,
+              request.query.email,
+              "Log in to " + process.env.TITLE,
+              "Just click to login. You will be redirected to <u>" + redirectURL.hostname + "</u> after your login is complete.",
+              "login",
+              "Log in now",
+              process.env.URL + "api/v" + request.params.version + "/login/finalize",
+              encodeURI(request.query.redirect)
+            );
+            response.status(200).send({loginRequested:true});
+          }
+        }
+      });
     }
   });
   
+  /****** ROUTE: /login/finalize (GET) *****************************/
+  // The finalize route looks for an email and a nonce sent to the 
+  // user and included in a confirmation link in that email. The 
+  // user is prompted to log in and told they will be redirected
+  // to an external site as set by the client upon login request. 
+  // 
+  // If the email and nonce validate properly then the user will 
+  // be redirected with their email and a new verification nonce to
+  // the redirect URL, which will then verify that email+nonce
+  // combination. If they do not validate 
+  //
+  // Note: this route DOES NOT use the token validation middleware
+  //       because it is a return from an in-email link.
   app.get("/api/v:version/login/finalize", function(request, response) {
     if(!request.query.email || !request.query.nonce || !request.query.redirect) {
       response.status(400).send({message: 'Bad request.'});
@@ -94,8 +156,12 @@ module.exports = function(app, db) {
                   '")'
               );
             });
+            // pass email and nonce for verification
             response.redirect(request.query.redirect + '?substation-email=' + request.query.email + '&substation-nonce=' + nonce);
           } else {
+            // pass just an email on failure. without the nonce verification 
+            // will fail but the client will still know that the API->email->client-site
+            // journey has been completed
             response.redirect(request.query.redirect + '?substation-email=' + request.query.email);
           }
         }
@@ -103,6 +169,16 @@ module.exports = function(app, db) {
     }
   });
   
+  /****** ROUTE: /login/verify (GET) *******************************/
+  // This simple method will take the email address and nonce passed
+  // to the redirect URL a client sets when asking for the initial 
+  // login requets. If the email+nonce matches we know the request
+  // was valid/secure as sent in the API->email->client-site 
+  // journey. Without this additional step we'd be asking API 
+  // clients to blindly accept easily spoofed querystrings. Using a
+  // nonce allows us an extra layer of confidence in this status.
+  // 
+  // Returns a boolean "login" value for the given email address.
   app.get("/api/v:version/login/verify", auth.validateAPIToken, function(request, response) {
     if(!request.query.email || !request.query.nonce) {
       response.status(400).send({message: 'Bad request.'});
@@ -121,6 +197,11 @@ module.exports = function(app, db) {
     }
   });
   
+  /****** ROUTE: /login/member (GET) *******************************/
+  // Gets member data/status for a given member (email address.) 
+  // This will return nothing but an "active: false" if the user 
+  // is no longer active/in good standing, but if the member is 
+  // active it will give firstName, lastName, email, and active
   app.get("/api/v:version/member", auth.validateAPIToken, function(request, response) {
     var subscribers = require(__dirname + "/../models/subscribers.js");
     

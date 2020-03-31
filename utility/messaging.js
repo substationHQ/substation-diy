@@ -41,6 +41,7 @@ var mg = mailgun({
 // (string)   message (which message? accepts: login, usubscribe, or welcome)
 // (string)   buttontext (for the "click here...")
 // (string)   url (if not set there will be no "click here..." button)
+// (string)   redirecturl (for API initiated logins)
 module.exports.sendMessage = function(
   app,
   email,
@@ -92,6 +93,8 @@ module.exports.sendMessage = function(
       "copy":buttontext
     };
   }
+  // the redirecturl is only set for API-initiated login requests. if 
+  // present we add the redirect parameter 
   if (details.showbutton && redirecturl) {
     details.button.url += "&redirect=" + redirecturl;
   }

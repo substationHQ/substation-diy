@@ -9,7 +9,7 @@
  *******************************************************************/
 
 module.exports = function(app, db) {
-  /****** ROUTE: /dashboard ****************************************/
+  /****** ROUTE: /dashboard (GET) **********************************/
   // This route does the main admin page, which has a few moving
   // parts. It requires a logged-in user so there's that gateway,
   // then also we need to collect stats after a user completes a 
@@ -59,7 +59,7 @@ module.exports = function(app, db) {
       if (request.query.email && users.isAdmin(request.query.email)) {
         // if the nonce is set we're returning from a login email
         if (request.query.nonce) {
-          console.log("admin login attempt: " + request.query.nonce);
+          //console.log("admin login attempt: " + request.query.nonce);
           var auth = require(__dirname + "/../utility/auth.js");
           // check the one-time nonce against the email it was sent to
           auth.validateNonce(

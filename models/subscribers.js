@@ -232,6 +232,8 @@ module.exports.getActive = function(callback) {
 // (function) callback(err,result)
 module.exports.remove = function(email, callback) {
   
+  // here we call the local getStatus function to see if the email
+  // is currently associated with an active subscriber
   module.exports.getStatus(email,function(err, member) {
     if (err) {
       callback(err, null);
@@ -263,9 +265,13 @@ module.exports.remove = function(email, callback) {
   });
 };
 
-/****** FUNCTION: subscribers.validate() ****************************/
-// Placeholder. Want to be able to say "does this email belong to an
-// active member?" and return a boolean.
+/****** FUNCTION: subscribers.getStatus() ****************************/
+// Checks to see if an email is associated with an active/in good
+// standing member. If not it will only return a false active 
+// parameter. If the member is active it will return true, as well 
+// as give other information like firstName, lastName, and email.
+// (string)   email
+// (function) callback(err,result)
 module.exports.getStatus = function(email, callback) {
   // FWIW: can't get the customers as an iterable array/object
   // so we wind up in this nested loopsy upside-down stream place.
@@ -284,63 +290,68 @@ module.exports.getStatus = function(email, callback) {
       if (err) {
         callback(err, null);
       } else {
-        customers.each(function(err, customer) {
-          // TODO: this weird "each" construction is necessary because of  
-          // the Braintree API, but will throw an error if two customers
-          // exist with the same email address. Should only occur in 
-          // error conditions so not fixing at present, but early
-          // Substation development did create multiple customers with
-          // the same email address. Worth looking at a long-term fix.
-          if (err) {
-            callback(err, null);
-          } else {
-            // we found at least one subscription, but we don't know yet if 
-            // any are active. if the nonce is valid and we made it this far 
-            // it's safe to assume the user is trying to cancel their 
-            // subscription, even if they already have, so we show them 
-            // success that they are indeed unsubscribed no matter what.
+        if (customers.length() < 1) {
+          // return no error, but null data to show no customers
+          callback(null, null);
+        } else {
+          customers.each(function(err, customer) {
+            // TODO: this weird "each" construction is necessary because of  
+            // the Braintree API, but will throw an error if two customers
+            // exist with the same email address. Should only occur in 
+            // error conditions so not fixing at present, but early
+            // Substation development did create multiple customers with
+            // the same email address. Worth looking at a long-term fix.
+            if (err) {
+              callback(err, null);
+            } else {
+              // we found at least one subscription, but we don't know yet if 
+              // any are active. if the nonce is valid and we made it this far 
+              // it's safe to assume the user is trying to cancel their 
+              // subscription, even if they already have, so we show them 
+              // success that they are indeed unsubscribed no matter what.
 
-            // loooooooooooooops (credit cards) — subscriptions are actually
-            // stored per card in Braintree so we gotta keep digging...
-            for (
-              var ii = 0, len = customer.creditCards.length;
-              ii < len;
-              ii++
-            ) {
-              var card = customer.creditCards[ii];
-              var active = false;
-              // more loooooooooooooooooooooooops (subscriptions)
+              // loooooooooooooops (credit cards) — subscriptions are actually
+              // stored per card in Braintree so we gotta keep digging...
               for (
-                var iii = 0, le = card.subscriptions.length;
-                iii < le;
-                iii++
+                var ii = 0, len = customer.creditCards.length;
+                ii < len;
+                ii++
               ) {
-                var subscription = card.subscriptions[iii];
-                // sweet lord we can finally check to make sure the sub is
-                // active and the plan matches the plan in the substation .env
-                if (
-                  subscription.status == "Active" &&
-                  subscription.planId == process.env.BRAINTREE_PLAN_ID
+                var card = customer.creditCards[ii];
+                var active = false;
+                // more loooooooooooooooooooooooops (subscriptions)
+                for (
+                  var iii = 0, le = card.subscriptions.length;
+                  iii < le;
+                  iii++
                 ) {
-                    // if true, return the member's subscription ID as true
-                    callback(null, {
-                      firstName: customer.firstName,
-                      lastName: customer.lastName,
-                      vendorSubID: subscription.id,
-                      active: true
-                    });
-                    active = true;
+                  var subscription = card.subscriptions[iii];
+                  // sweet lord we can finally check to make sure the sub is
+                  // active and the plan matches the plan in the substation .env
+                  if (
+                    subscription.status == "Active" &&
+                    subscription.planId == process.env.BRAINTREE_PLAN_ID
+                  ) {
+                      // if true, return the member's subscription ID as true
+                      callback(null, {
+                        firstName: customer.firstName,
+                        lastName: customer.lastName,
+                        vendorSubID: subscription.id,
+                        active: true
+                      });
+                      active = true;
+                  }
+                }
+                if (!active) {
+                  // return no error, but give false status — this shows
+                  // we found a user, but they are not subscribed to the 
+                  // current plan
+                  callback(null, false);
                 }
               }
-              if (!active) {
-                // return no error, but give false status — this shows
-                // we found a user, but they are not subscribed to the 
-                // current plan
-                callback(null, false);
-              }
             }
-          }
-        });
+          }); 
+        }
       }
     }
   );
