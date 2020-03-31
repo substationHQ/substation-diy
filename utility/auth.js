@@ -13,6 +13,36 @@
 var db = require(__dirname + '/database.js');
 
 
+/****** FUNCTION: auth.generateNonce() *****************************/
+// Looks at email+nonce pairings in the database and checks them
+// against a given input, expecting:
+// (string)   email
+// (function) callback(err,result)
+//
+// TODO: placeholder. Needs to be completed, but also probably
+//       needs to be synchronous? 
+//
+//       research: https://www.npmjs.com/package/better-sqlite3
+module.exports.generateNonce = function(email, callback) {
+  /*
+  // enable basic uuids for a little later
+  var { v1: uuidv1 } = require('uuid');
+  var db = require(__dirname + "/database.js");
+  // quickly generate a nonce
+  var nonce = uuidv1();
+  // assume we need the return, so store it in db
+  db.serialize(function() {
+    db.run(
+      'INSERT INTO Nonces (email, nonce) VALUES ("' +
+        email +
+        '","' +
+        nonce +
+        '")'
+    );
+  });
+  */
+}
+
 /****** FUNCTION: auth.validateNonce() *****************************/
 // Looks at email+nonce pairings in the database and checks them
 // against a given input, expecting:
@@ -44,8 +74,50 @@ module.exports.validateNonce = function(email, nonce, callback) {
   );
 }
 
-/****** FUNCTION: auth.validateAPISecret() *************************/
-// Placeholder.
-module.exports.validateAPISecret = function(email, signature, callback) {
+/****** FUNCTION: auth.getAPISecrets() *****************************/
+// Creates a unique hashed "key" for each admin user and returns an  
+// array of each user/key combination keyed to the email address.
+module.exports.getAPISecrets = function() {
+  var users = require(__dirname + "/../models/users.js");
+  var crypto = require('crypto');
+  var admins = users.getAdminUsers();
+  var secrets = {};
+  admins.forEach(function(admin){
+    // create the hash from a combination of the admin email address and 
+    // the security secret, then shorten to 24 characters
+    secrets[admin] = crypto.createHash('sha256').update(admin + process.env.SECURITY_SECRET).digest('hex').substr(0,24);
+  });
+  return secrets;
+}
+
+/****** FUNCTION: auth.validateAPIToken() **************************/
+// A middleware function the API controller that looks for the 
+// x-access-token header and checks its value against an issued
+// token — these are JSON web tokens encoded with an admin's 
+// email address and API key, and containing just the admin email
+module.exports.validateAPIToken = function(request, response, next) {
+  var jwt = require('jsonwebtoken');
+  var users = require(__dirname + "/../models/users.js");
   
+  var token = request.headers['x-access-token'];
+  if (!token) {
+    response.status(403).send({ auth: false, message: 'No token provided.' });
+  } else {  
+    jwt.verify(token, process.env.SECURITY_SECRET, function(err, decoded) {
+      if (err) {
+        response.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+      } else {
+        // if everything good, save to request for use in other routes
+        request.email = decoded.email;
+
+        // now check for admin persmissions
+        if (!users.isAdmin(request.email)) {
+          response.status(401).send({ auth: false, message: 'Unauthorized.' });
+        } else {
+          // whew! next.
+          next(); 
+        }
+      }
+    });
+  }
 }
