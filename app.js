@@ -7,6 +7,11 @@
  *
  *********************************************************************/
 
+// load the .env variables if not found (aka: local development)
+if (!process.env.SECURITY_SECRET) {
+  require('dotenv').config();
+}
+
 // load server config and database initialization scripts
 var app = require('./utility/server.js');
 var db = require('./utility/database.js');
@@ -14,7 +19,18 @@ var db = require('./utility/database.js');
 // handle routing
 require('./controllers/index.js')(app,db);
 
-// start up the server
-app.listen(process.env.PORT || 8080, () =>
-  console.log(`Your app is listening on port ${process.env.PORT || 8080}`)
-);
+// start up the server — different from local to live on glitch, elsewhere
+if (process.argv.indexOf("dev")) {
+  const https = require('https');
+  const fs = require('fs');
+  const key = fs.readFileSync('./config/key.pem');
+  const cert = fs.readFileSync('./config/cert.pem');
+  const ssl = https.createServer({key: key, cert: cert }, app);
+  ssl.listen(process.env.PORT || 8080, () =>
+    console.log(`△△ substation: listening on port ${process.env.PORT || 8080} (ssl)`)
+  );
+} else {
+  app.listen(process.env.PORT || 8080, () =>
+    console.log(`△△ substation: listening on port ${process.env.PORT || 8080}`)
+  );
+}

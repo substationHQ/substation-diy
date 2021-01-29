@@ -47,15 +47,16 @@ app.use(cors());
 // in all controllers for any view.
 app.scriptNonce = Buffer.from(process.env.SECURITY_SECRET + Date.now()).toString('base64').substring(0, 12);
 
-// enable basic csp headers
+// enable basic csp headers (only for remote!)
 app.use(csp({
   policies: {
     "default-src": ['https:', 'data:', "'unsafe-inline'"],
     "script-src": [
       "'nonce-"+app.scriptNonce+"'",
-      "https://cdn.jsdelivr.net/gh/substation-me/",
+      "https://cdn.jsdelivr.net/gh/substationhq/",
       "https://js.braintreegateway.com/",
-      "https://cdn.quilljs.com/"
+      "https://cdn.quilljs.com/",
+      "https://localhost/"
     ],
     "object-src": ["'self'"],
     "form-action": ["'self'"],
@@ -80,11 +81,16 @@ app.set("views", __dirname + "/../views"); // point at our views
 // force SSL!
 function checkHttps(req, res, next) {
   // protocol check, if http, redirect to https
-  if (req.get("X-Forwarded-Proto").indexOf("https") != -1) {
+  if (process.argv.indexOf("dev")) {
+    // no forward/redirect shenanigans on local dev
     return next();
   } else {
-    console.log("redirecting to ssl");
-    res.redirect("https://" + req.hostname + req.url);
+    if (req.get("X-Forwarded-Proto").indexOf("https") != -1) {
+      return next();
+    } else {
+      console.log("redirecting to ssl");
+      res.redirect("https://" + req.hostname + req.url);
+    }
   }
 }
 app.all("*", checkHttps);

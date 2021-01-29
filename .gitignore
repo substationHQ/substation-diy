@@ -1,1 +1,5 @@
+.DS_Store
+.data
+.env
 config/
+node_modules/

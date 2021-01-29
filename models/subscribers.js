@@ -143,30 +143,30 @@ module.exports.getTotals = function(callback) {
           "members":0
         };
         var len = subs.length();
-        // we need this count to know where we are in the stream —
-        // feels a little janky but less janky than moving to an 
-        // async/await structure
-        var count = 0;
-        subs.each(function(err, subscription) {
-          // loop all viable entries. the check for a blank email is 
-          // likely unnecessary, but a few blanks snuck in during 
-          // testing so it clearly can't hurt. we've added some 
-          // checks when setting things up, but left in the check
-          // against blank email addresses here because who cares.
-          if (subscription.transactions[0].customer.email !== "") {
-            totals.members = totals.members+1;
-            totals.value = Math.round(totals.value + parseFloat(subscription.nextBillingPeriodAmount));
-          }
-          count++;
-          // check if we've read the whole stream. if so, output the CSV
-          if (count == len) {
-            if (count > 0) {
-              callback(null,totals);
-            } else {
-              callback("Not found", null);
+        if (len === 0) {
+          callback(null,totals);
+        } else {
+          // we need this count to know where we are in the stream —
+          // feels a little janky but less janky than moving to an 
+          // async/await structure
+          var count = 0;
+          subs.each(function(err, subscription) {
+            // loop all viable entries. the check for a blank email is 
+            // likely unnecessary, but a few blanks snuck in during 
+            // testing so it clearly can't hurt. we've added some 
+            // checks when setting things up, but left in the check
+            // against blank email addresses here because who cares.
+            if (subscription.transactions[0].customer.email !== "") {
+              totals.members = totals.members+1;
+              totals.value = Math.round(totals.value + parseFloat(subscription.nextBillingPeriodAmount));
             }
-          }
-        });
+            count++;
+            // check if we've read the whole stream. if so, output the CSV
+            if (count == len) {
+              callback(null,totals);
+            } 
+          }); 
+        }
       }
     }
   );
