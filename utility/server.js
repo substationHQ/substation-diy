@@ -52,6 +52,7 @@ app.use(csp({
   policies: {
     "default-src": ['https:', 'data:', "'unsafe-inline'"],
     "script-src": [
+      "'self'",
       "'nonce-"+app.scriptNonce+"'",
       "https://cdn.jsdelivr.net/gh/substationhq/",
       "https://js.braintreegateway.com/",

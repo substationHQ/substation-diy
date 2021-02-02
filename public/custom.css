@@ -201,3 +201,14 @@ iframe.vv-embed {
   
 }
 
+
+/* overlays and checkout */
+.substation__loading {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-27px;
+  margin-top:-24px;
+  width: 55px;
+  height:48px;
+}

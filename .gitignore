@@ -1,5 +1,6 @@
 .DS_Store
 .data
+public/.dev/
 .env
 config/
 node_modules/
