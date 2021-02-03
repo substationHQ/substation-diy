@@ -20,7 +20,7 @@ var db = require('./utility/database.js');
 require('./controllers/index.js')(app,db);
 
 // start up the server — different from local to live on glitch, elsewhere
-if (process.argv.indexOf("dev")) {
+if (process.argv.includes('dev')) {
   const https = require('https');
   const fs = require('fs');
   const key = fs.readFileSync('./config/key.pem');
