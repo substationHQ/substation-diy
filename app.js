@@ -10,6 +10,7 @@
 // load the .env variables if not found (aka: local development)
 if (!process.env.SECURITY_SECRET) {
   require('dotenv').config();
+  console.log(process.env.MAILGUN_FROM_EMAIL);
 }
 
 // load server config and database initialization scripts
