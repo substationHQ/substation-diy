@@ -2,5 +2,5 @@
 .data
 public/.dev/
 .env
-config/
 node_modules/
+config/*.pem
