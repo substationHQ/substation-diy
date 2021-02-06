@@ -1,89 +1,86 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html lang="en" class="substation-brand-page">
+
 <head>
-
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{{copy.title}}</title>
-  <meta name="description" content="{{copy.description}}">
-  <meta name="author" content="@jessevondoom">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="description" content="An open-source app that lets you build subscriptions and newsletters.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
 
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" type="text/css" href="/custom.css">
+  <meta property="og:title" content="substation, DIY version">
+  <meta property="og:description" content="An open-source app that lets you build subscriptions and newsletters.">
+  <meta property="og:type" content="image/png">
+  <meta property="og:url" content="https://substation.glitch.me/">
+  <meta property="og:image" content="https://lodge.substation.dev/assets/images/opengraph-substation.png">
 
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Flogo-bw-email.png?v=1579197689402">
+  <!-- generics -->
+  <link rel="icon" href="https://www.substation.dev/assets/icons/favicon-32.png" sizes="32x32">
+  <link rel="icon" href="https://www.substation.dev/assets/icons/favicon-192.png" sizes="192x192">
+
+  <!-- Android -->
+  <link rel="shortcut icon" sizes="196x196" href="https://www.substation.dev/assets/icons/favicon-196.png">
+
+  <!-- iOS -->
+  <link rel="apple-touch-icon" href="https://www.substation.dev/assets/icons/favicon-152.png" sizes="152x152">
+  <link rel="apple-touch-icon" href="https://www.substation.dev/assets/icons/favicon-180.png" sizes="180x180">
+
+  <link rel="stylesheet" href="/assets/css/normalize.css">
+  <link rel="stylesheet" href="/assets/css/gettingstarted.css">
+
+  <!-- △△ lodge include ---------------------- -->
   <script src="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/lodge.js" data-options="noembed" crossorigin="anonymous"></script>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/modules/checkout.js">
+  <link rel="dns-prefetch" href="https://js.braintreegateway.com/web/3.46.0/js/hosted-fields.min.js">
+
 </head>
+
 <body>
+  <div class="background-wrapper"></div>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-
-  <div class="section hero">
-    <div class="container">
-      <div class="row">
-        <h1>
-          Let's get started.
-        </h1>
-        <h2>
-          SUBSTATION <span class="diy">OVERVIEW</span> <span class="logo">///</span>
-        </h2>
-      </div>
-    </div>
-  </div>
-  
-  <div class="section more">
-    <div class="container">
-      <div class="row">
-        <div class="one column">&nbsp;</div>
-        <div class="ten columns" id="intro">
+    <main>
+        <section class="intro">
+          <h1 class="logo-substation">substation <span>diy</span></h1>
+          <h2>Make your own newsletter</h2>
           <p>
-            Substation DIY is a free, open, and secure way to set up simple membership clubs with 
-            recurring payments and an easy way to compose and send email to all members. 
-          </p><p>
-            Let's get it all set up!
+            Substation lets you make a club or newsletter using your own <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a> 
+            and <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> accounts. It's free, open-source, and easy to set up. Think about it 
+            like making a zine in the platform era and Substation is your friend who works at the copy shop.
           </p>
+        </section>
+        <div class="alt-section">
+          <div class="split-content">
+            <section>
+              <h2>Want to try it?</h2>
+              <p class="tight">
+                Here's a test card number to use:
+              </p>
+              <tt>
+                4111 1111 1111 1111<br>
+                Exp: 04/2023 &nbsp; CVV: 123
+              </tt>
+              
+            </section>
+            <section>
+              <embed class="lodge" title="checkout embed" src="/embed">
+            </section>
+          </div>
         </div>
-        <div class="one column">&nbsp;</div>
-      </div>
-    
-      <div class="row">
-        <div class="one column">&nbsp;</div>
-        <div class="five columns">
-          <h2>The embed</h2>
-          <p>
-            The widget you see here is a simple embed:
-          </p>
+
+        <section class="docs">
+          <h3>A few basics</h3>
           <code class="embed">
             &lt;!-- Substation embed code --&gt;
             <br />
             &lt;script src="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/lodge.js"&gt;&lt;/script&gt;<br />
             &lt;embed class="lodge" src="{{substationURL}}embed"&gt;<br />
           </code>
-        </div>
-        <div class="five columns">
-          <div id="details">
-            <embed class="lodge" src="/embed">
+          
+          <div class="interstitial">
+            <a href="https://twitter.com/substationHQ"><img class="icon-service" src="/assets/images/icon-twitter.svg" alt="Twitter"></a>
           </div>
-        </div>
-        <div class="one column">&nbsp;</div>
-      </div>
-      
-      <div class="row padded">
-        <div class="one column">&nbsp;</div>
-        <div class="ten columns">
-          <h2>
-            Getting things working.
-          </h2>
+
+          <h3>Getting started</h3>
           <p>
             To get Substation DIY fully up and running you'll need a <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a> 
             account to take payments, and a <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> account to send out mail. 
@@ -101,7 +98,7 @@
             </li>
             <li>
               Set the security secret. This can be anything no one will guess. Mash the keyboard even!<br />
-              <code>SECURITY_SECRET=seriouslyanythinglolololsdfjsicuy76Afb</code>
+              <code>SECURITY_SECRET=what3verYouwant!keepitSECRE7.</code>
             </li>
             <li>
               Finally, you need to add information from Braintree and Mailgun. Both need API keys and 
@@ -110,9 +107,14 @@
               and give a minimum amount for your monthly membership fee.
             </li>
           </ol>
-          <h2>
+
+          <div class="interstitial">
+            <a href="https://lodge.glitch.me/"><img class="icon-service" src="/assets/images/icon-glitch.svg" alt="Glitch"></a>
+          </div>
+
+          <h3>
             Customizing this page
-          </h2>
+          </h3>
           <p>
             You can put the signup widget on any website, but if you want to customize
             this one (or the email Substation sends) — well you can! Here's how:
@@ -120,7 +122,7 @@
           <ol>
             <li>Create a folder called <samp>/config</samp> at the top level of the app</li>
             <li>For a custom homepage, create a file called <samp>/config/views/index.html</samp> — 
-               this will be shown instead of the default page</li>
+                this will be shown instead of the default page</li>
             <li>To add CSS create <samp>/config/public/custom.css</samp> — 
               you can access this file as <a href="/customcss"><samp>/customcss</samp></a> from the domain root</li>
             <li>You can also customize the email templates — 
@@ -132,9 +134,14 @@
               </ul>
             </li>
           </ol>
-          <h2>
+
+          <div class="interstitial">
+            <a href="https://github.com/substationHQ"><img class="icon-service" src="/assets/images/icon-github.svg" alt="GitHub"></a>
+          </div>
+
+          <h3>
             Just a few more things.
-          </h2>
+          </h3>
           <ul>
             <li>
               The admin dashboard is located at <a href="/dashboard"><samp>/dashboard</samp></a> — login there to see
@@ -142,49 +149,18 @@
               or send email.
             </li>
             <li>
-              Don't worry if the <samp>/config</samp> folder disappears on you. It's hidden
-              using a <samp>.gitignore</samp> file so customizations don't get pushed on you. 
-              There are two easy fixes. To temporarily un-hide it, just edit
-              the one-line gitignore file so it doesn't match config/ anymore, 
-              refresh, then reload. You can change it back once you see the folder.
-              Or you can just delete the .gitignore file completely — the main
-              project needs it, but your remixes maybe don't?</li>
-            <li>
-              Need more than one admin login? Yeah us too. All you need is a little JSON wrapped in 
-              <code>$''</code> in your <samp>.env</samp> file. You can add any number of admin emails this way, like so:<br />
-              <code>ADMIN_EMAIL=$'["hello@substation.me","hi@substation.me"]'</code>
+              Need more than one admin login? Yeah us too. Put a comma separated list between brackets like so:<br />
+              <code>ADMIN_EMAIL='["hello@substation.me", "hi@substation.me"]'</code>
             </li>
             <li>
-              Want a nicer looking FROM address for Mailgun? Use the same <code>$''</code> trick:<br />
-              <code>MAILGUN_FROM_EMAIL=$'Substation &lt;hello@substation.me&gt;'</code>
+              Want a nicer looking FROM address for Mailgun? Use a long-format email address:<br />
+              <code>MAILGUN_FROM_EMAIL='Substation &lt;hello@substation.dev&gt;'</code>
             </li>
           </ul>
-        </div>
-        <div class="one column">&nbsp;</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section footer">
-    <div class="container">
-      <div class="row">
-        <div class="eight columns">&nbsp;</div>
-        <div class="four columns corner">
-          <h1>
-            <span class="logo">///</span>
-          </h1>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  
-<!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-
-  
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  
+        </section>
+    </main>
+<footer>
+  <img class="slashes" src="/assets/images/slashes.svg" alt="///">
+</footer>
 </body>
 </html>

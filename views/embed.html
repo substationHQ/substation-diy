@@ -16,14 +16,17 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" type="text/css" href="/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/skeleton.css">
-  <link rel="stylesheet" type="text/css" href="/embed.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/skeleton.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/embed.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="https://cdn.glitch.com/9f35da85-6537-4c08-8c75-92364571d412%2Flogo-bw-email.png?v=1579197689402">
   <script src="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/lodge.js" crossorigin="anonymous"></script>
+
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/modules/checkout.js">
+  <link rel="dns-prefetch" href="https://js.braintreegateway.com/web/3.46.0/js/hosted-fields.min.js">
 </head>
 <body>
 
@@ -39,11 +42,11 @@
         </div>
         {{#sandboxed}}
         <div class="sandbox-mode">
-          <b>SANDBOX MODE.</b> <a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/node" target="_blank">Test cards</a> only, no real currency.
+          <b>SANDBOX MODE.</b> <a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/node" target="_blank">Test cards</a> only, no real money.
         </div>
         {{/sandboxed}}
         <div class="fine-print">
-          By signing up you are agreeing to recurring payments. You are free to <a href="#" id="cancelLink">cancel</a> any time.
+          You're signing up for recurring payments, <a href="#" id="cancelLink">cancel</a> any time.
         </div>
       </div>
 
@@ -80,7 +83,7 @@
       // allow for price customization
       document.getElementById('input-price').addEventListener('change', function(e) {
         if (e.target.value > {{braintree.minimumCost}}) {
-          checkoutOptions.amount = e.target.value;
+          vv.storage.checkoutOptions.amount = e.target.value;
           document.getElementById('checkout-price').innerHTML = e.target.value;
         } else {
           e.target.value = {{braintree.minimumCost}};

@@ -1,15 +1,22 @@
-@import url('https://fonts.googleapis.com/css?family=Arvo|Quicksand&display=swap');
+/*** Fonts, typography, resets, etc ***************/
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&family=Zilla+Slab:wght@300;700&display=swap');
 
 /* apply a natural box layout model to all elements, but allowing components to change */
 body {
   background-color:transparent;
   font-size: 16px;
-  font-family:'Arvo','helvetica neue',helvetica,arial,sans-serif;
+  font-family: "Zilla Slab","Roboto Slab",serif;
 }
 
 h1,h2,h3,h4 {
   font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
   color:#000;
+}
+a {
+  color: #cff0ff;
+}
+a:hover {
+  color: #00aeff;
 }
 
 /* form elements */
@@ -34,10 +41,11 @@ input[type=text] {
 */
   
 a.button, button, input[type=submit], input[type=button] {
-  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
-  font-size: 12px;
+  font-family:Helvetica,Arial,sans-serif;
+  font-weight: bold;
+  font-size: 0.65em;
   line-height:16px;
-  background-color: mediumseagreen;
+  background-color: #00a500;
   width:100%;
   border: none;
   padding: 16px;
@@ -55,7 +63,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 a.button:hover, button:hover, input[type=submit]:hover, input[type=button]:hover {
   color:black;
-  background-color: rgb(235, 219, 0);
+  background-color: #ffff00;
 }
 
 button:disabled, input[type=button]:disabled {
@@ -78,7 +86,7 @@ button:disabled, input[type=button]:disabled {
 }
 
 .subscription-widget {
-  font-family:'Quicksand','helvetica neue',helvetica,arial,sans-serif;
+  font-family: "Zilla Slab","Roboto Slab",serif;
   background-color:#fff;
   margin-bottom:0;
   border-radius: 9px;
@@ -98,10 +106,14 @@ button:disabled, input[type=button]:disabled {
   flex-basis:40%;
   padding:1rem 1rem 1rem 2rem;
   height:48px;
+  font-family: monospace;
   position:relative;
+  color:#111;
+  margin-bottom:0;
 }
 .checkout-button::before {
   content:'$';
+  font-family: monospace;
   display:block;
   height: 48px;
   z-index:10;
@@ -118,22 +130,30 @@ button:disabled, input[type=button]:disabled {
   height:48px;
   flex-basis:55%;
   transition:all 0.2s ease;
+  margin-bottom:0;
 }
 .checkout-button input:focus {
   box-shadow: 0 0 8px rgba(100,193,235,0.5);
 }
 
 .fine-print, .sandbox-mode {
-  background: rgba(85,102,119,1);
-  padding: 16px;
-  font-size: 12px;
+  background: #333;
+  padding: 11px;
+  font-size: 13px;
   line-height: 14px;
-  color:#ccc;
+  color:#aaa;
+}
+
+.sandbox-mode a {
+  color: #ec0000;
+}
+.sandbox-mode a:hover {
+  color: #00aeff;
 }
 
 .sandbox-mode {
-  background: rgba(235,219,0,1);
-  background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(255,255,0,0.5) 15px, rgba(255,255,0,0.5) 30px);
+  background: #ffff00;
+  background-image: repeating-linear-gradient(-45deg, transparent, transparent 15px, rgba(235,219,0.5) 15px, rgba(235,219,0.5) 30px);
   padding: 8px 16px;
   color:#222;
 }

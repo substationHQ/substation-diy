@@ -1,0 +1,235 @@
+/*** Fonts, typography, resets, etc ***************/
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&family=Zilla+Slab:wght@300;700&display=swap');
+
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+
+:root{
+    font-size: 18px;
+    line-height: 1.5em;
+}
+body{
+    -webkit-font-smoothing: subpixel-antialiased;
+    font-family: "Zilla Slab","Roboto Slab",serif;
+    font-weight: 300;
+}
+main {
+    color:#222;
+    position: relative;
+    padding: 0 .5em;
+}
+
+h1,h2,h3,h4,h5,h6{
+    color:#000;
+    font-family: Quicksand;
+    font-weight: 400;
+}
+h1{
+    font-size: 4.25em;
+    line-height: 1em;
+    margin-bottom: 0;
+}
+h2 {
+    font-size: 1.65em;
+    line-height: 1.125em;
+}
+code, samp {
+    font-size: 0.85em;
+    color: #00AEFF;
+}
+tt {
+    display:block;
+    font-size: 0.85em;
+    color: #bbb;
+    line-height: 1.5em;
+}
+a { 
+	color: #000;
+	text-decoration: none; 
+	-webkit-transition: box-shadow 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000), color 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -moz-transition: box-shadow 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000), color 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    -o-transition: box-shadow 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000), color 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000); 
+    transition: box-shadow 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000), color 150ms cubic-bezier(0.770, 0.000, 0.175, 1.000); /* easeInOutQuart */
+    box-shadow: inset 0 -0.07em 0 #ec008c;
+}
+a:hover { 	
+    box-shadow: inset 0 -0.85em 0 #ffff00;
+    color: #000;
+}
+p, li {
+    font-size: 1.125em;
+}
+p.tight {margin-bottom: 0.25em;}
+li li {
+    font-size: inherit;
+}
+
+/*** Top half: intro, background ***************/
+.background-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80em;
+    overflow: hidden;
+    background:center 26em url(../images/logo-s-overprint.svg) no-repeat;
+    background-size: auto 33em;
+}
+.intro{
+    max-width: 32em;
+    margin: 0 auto 13em;
+    padding-top: max(8vh, 4em);
+}
+.logo-substation {
+    position: relative;
+}
+.logo-substation::before {
+    content: '';
+    background-image: url('/assets/images/logo-s.svg');
+    display: inline-block;
+    background-repeat: no-repeat;
+    height: 0.8em;
+    width: 0.8em;
+    position: relative;
+    top: 0.125em;
+}
+
+.logo-substation span {
+    color:#00a500;
+}
+
+.icon-paragraph {
+    position: relative;
+}
+
+.icon-paragraph::before {
+    content: '';
+    display: block;
+    background-repeat: no-repeat;
+    height: 4em;
+    width: 4em;
+    position: absolute;
+    left: -4em;
+}
+
+/*** Bottom half: Embed section, docs, etc. ***************/
+.content {
+    width: 100%;
+    padding: 0 1em;
+    max-width: 60em;
+}
+.split-content{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 1em auto;
+}
+.split-content section {
+    padding: 1em;
+    margin: 0;
+    flex: 1;
+    min-width: 300px;
+}
+.alt-section {
+    color: white;
+    position: relative;
+    padding: 0.25em 4vw 0.25em 4vw;
+    margin: 0 -0.5em 2em -0.5em;
+    background-color: black;
+}
+.alt-section h1,.alt-section h2,.alt-section h3,.alt-section h4,.alt-section h5,.alt-section h6{
+    margin: 0;
+    color:#fff;
+}
+.docs {
+    padding: 4em 0;
+    max-width: 42em;
+    margin: 0 auto;
+}
+.docs .interstitial {
+    width: 100%;
+    text-align: center;
+    padding: 3.5em 0 3em 0;
+}
+.icon-service {
+    display: inline-block;
+    width: 2.5em;
+    height: auto;
+    border: 0;
+    margin-left: 1em;
+}
+.interstitial a {
+    box-shadow: none;
+}
+.interstitial a:hover {
+    box-shadow: none;
+}
+code.embed {
+    display: block;
+    width:100%;
+    overflow: hidden;
+    font-size: 0.70em;
+    white-space: nowrap;
+    padding:1.25em;
+    border-radius: 9px;
+    background-color: #cff0ff;
+  }
+
+/*** Footer, overprint slashes, corner slashes ***************/
+.slashes {
+    position: absolute;
+    width: 1.5em;
+    height: auto;
+    right: 2em;
+    bottom: 2em;
+}
+footer {
+    padding-top: 13em;
+    position: relative;
+}
+footer::before{
+    content:'';
+    position: absolute;
+    top: 0;
+    width: 88%;
+    height: 13em;
+    display: block;
+    background-image: url('/assets/images/slashes-overprint.svg');
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-size: 36em;
+}
+.footer-logo-wrap{
+    background: black;
+    text-align: center;
+    padding: 1em 0;
+}
+.footer-logo {
+    display: block;
+    margin: 0 auto;
+    line-height: 1;
+}
+
+/*** Media queries, mostly tweaks for mobile ***************/
+@media only screen and (max-device-width: 1024px) {
+    h1{
+        font-size: 2.65em;
+    }
+    .intro{
+        padding-top: 1.5em;
+    }
+    .intro h2 {
+        font-size: 1.5em;
+        margin-bottom: 2em;
+    }
+    .background-wrapper{
+        background-size: auto 43em;
+    }
+}
+@media only screen and (max-width: 740px) {
+    footer::before{
+        width:100%;
+    }
+}
