@@ -1,5 +1,5 @@
 /*** Fonts, typography, resets, etc ***************/
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400&family=Zilla+Slab:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Zilla+Slab:wght@300;700&display=swap');
 
 *, *::before, *::after{
     box-sizing: border-box;
@@ -154,17 +154,40 @@ li li {
     padding: 3.5em 0 3em 0;
 }
 .icon-service {
-    display: inline-block;
+    display: block;
     width: 2.5em;
     height: auto;
     border: 0;
-    margin-left: 1em;
+    float: left;
 }
 .interstitial a {
     box-shadow: none;
 }
 .interstitial a:hover {
     box-shadow: none;
+}
+.annotated-link {
+    display: inline-block;
+}
+.annotated-link a, .annotated-link h4 {
+    color: #666;
+}
+.annotated-link h4 {
+    margin: 4px 0 0 0;
+    font-weight: 600;
+}
+.annotated-link.glitch h4 {
+    margin: -1px 0 0 0;
+}
+.annotated-link.github h4 {
+    margin: 3px 0 0 0;
+}
+.annotation {
+    display:inline-block;
+    font-size: 0.9em;
+    line-height: 1.25em;
+    text-align: left;
+    padding-left: 0.5em;
 }
 code.embed {
     display: block;
