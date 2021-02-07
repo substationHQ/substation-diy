@@ -5,7 +5,7 @@
   "name": "substation",
   "version": "0.1.1",
   "description": "A simple subscription app that uses Braintree + Mailgun to create fan club subscriptions.",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "node app.js dev"
