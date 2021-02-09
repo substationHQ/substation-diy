@@ -50,9 +50,9 @@
         <div class="alt-section">
           <div class="split-content">
             <section>
-              <h2>Want to test it?</h2>
+              <h2>Want to kick the tires?</h2>
               <p class="tight">
-                Here's a test card number to use:
+                Test the sign-up with this card:
               </p>
               <tt>
                 4111 1111 1111 1111<br>
@@ -90,8 +90,8 @@
 
           <h3>Tell me more</h3>
           <p>
-            Your potential members first interact with the substation sign-up embed.
-            This can live on your site or on a simple page hosted by substation — or both. There's a dashboard you can use 
+            Potential members first interact with substation using the sign-up embed.
+            This can live on your site or on a simple page hosted by substation — or both even. There's a dashboard you can use 
             to email all members or export a CSV. It's all built on a simple API that handles email verification,
             mailing campaigns, and recurring paments.
           </p><p>
@@ -121,9 +121,9 @@
             Substation is just a few parts stitched together with a library we built called 
             <a href="https://lodge.substation.dev/">Lodge</a>. For now you'll need accounts with <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a>
             (payments) and <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> (bulk email) to get it all 
-            running. Neither will cost you anything but a little time to set up.
+            running. Neither service will cost you anything up front except a little time for set up.
           </p><p>
-            Lodge handles the embed, which can open a full-screen checkout overlay of whatever page it lives on, 
+            Lodge handles the responsive embed, which can open a full-screen checkout overlay on any page, 
             and it's as easy to embed as a YouTube video:
           </p>
           
@@ -135,14 +135,14 @@
           </code>
 
           <p>
-            So here's the weird thing. There's no database. We wanted to make substation as easy to use as possible,
-            so we designed around what we could do with the Braintree API and email authentication. So all customer
+            Now here's the weird thing: there's no database. We wanted to make substation as easy to use as possible,
+            so we designed around what we could do with just a payment API and email authentication. So all customer
             information is stored safely with the payment provider, and user authentication happens pretty much like 
             every other site resets a password — except without a password. Just push a button in your inbox to 
             login. 
           </p><p> 
             This means all of substation is configured and customized with a single <code>.env</code> file 
-            and a few markup/css files for customization — and more importantly it makes custom software a lot less
+            and a few markup/css files for customization. More importantly it makes custom software a lot less
             intimidating. Databases can cut you.
           </p><p>
             If you're still reading, then maybe you'd enjoy this <a href="https://github.com/substationHQ/substation-diy/blob/master/README.md">README</a>.
@@ -164,7 +164,7 @@
             What's next?
           </h3>
           <p>
-            Substation is a work in progress. Right now we're exploring more payment options and services for Lodge. Up next the idea is to move substation
+            Substation is a work in progress. Right now we're exploring more payment options and services for Lodge. After that the idea is to move substation
             towards more of a serverless architecture, but carefully so it can work on services like Glitch and Vercel 
             side by side. 
           </p><p>
