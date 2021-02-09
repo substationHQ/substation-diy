@@ -1,8 +1,49 @@
 Substation DIY
 ==============
-Using Braintree, Mailgun, and a little bit of glue to build a basic subscription / fan club.
+Substation lets you make a club or newsletter using your own accounts on services like Braintree and 
+Mailgun. It's free, open-source, and easy to set up.
    
-  
+Getting started
+---------------
+Once you have your accounts at Braintree and Mailgun you just need to edit the `.env` file in your Glitch project.
+
+Here it is, step-by-step:
+
+  - Add an admin email and set the title and main URL (your glitch URL)
+    - `ADMIN_EMAIL=hello@substation.dev`
+    - `TITLE=Substation`
+    - `URL=https://substation.glitch.me/`
+  - Set the security secret. This can be anything no one will guess. Mash the keyboard even!
+    - `SECURITY_SECRET=what3verYouwant!keepitSECRE7`
+  - Finally, you need to add information from Braintree and Mailgun. Both need API keys and 
+    secrets. Mailgun needs a 'FROM' email address, and Braintree needs you to set up a 
+    subscription and add its ID, set the environment as `Sandbox` or `Production`,
+    and give a minimum amount for your monthly membership fee.
+
+Logging In
+----------
+The admin dashboard is located at your.site/dashboard — login there to see
+current subscriber stats, get your embed code, export a member list, or send email.
+
+Customizing the page and embed
+------------------------------
+You can add fully custom templates and CSS for the embed, emails, and the main index
+page. They each have corresponding files in the `/views` folder, but make a copy in your
+`/config` folder so you'll have all your changes in one place. Substation will use your
+files instead of the defaults, and later if you upgrade of move to a new webhost you
+only have to copy your `.env` file and the `/config` folder.
+
+Create a folder called `/config` at the top level of the app
+  - For a custom homepage, create a file called `/config/views/index.html` — 
+    this will be shown instead of the default page
+  - To add CSS create `/config/public/custom.css` — 
+    you can access this file as `/customcss` from the domain root to include it in an html file
+  - You can also customize the email templates — 
+    - `/config/views/email.html` for the main email template
+    - `/config/views/messages/login.html`, unsubscribe.html, and welcome.html
+      (For these we suggest starting with a copy of the default templates
+      that are located in the main /views folder)
+
 Project structure
 -----------------
 Substation on Glitch is pretty minimal: a basic Node+Express setup, Braintree for payment 
@@ -11,7 +52,7 @@ for the overlays and checkout flow.
 
   - [Braintree](https://developers.braintreepayments.com/)
   - [Mailgun](https://documentation.mailgun.com/en/latest/)
-  - [Lodge](https://lodge.glitch.me/)
+  - [Lodge](https://lodge.substation.dev/)
   
 Most of the project settings are in the .env file — the idea being that anyone who wants to
 remix Substation needs only edit the .env with their own Braintree/Mailgun keys and a few 
@@ -27,19 +68,9 @@ any view/HTML.)
 Lastly, the overlays all live as part of the Lodge library. They're made to be responsive and
 secure cross-domain, so ultimately we'll host stable versions of Lodge on a CDN.
 
-Getting started
----------------
-See the default index.html view — it's the default page that you see when you launch a new
-page! It steps you through setting up the .env file, customizing the pages, using the embed,
-and a few other helpful tips.
-
-The getting started guide is also available at the 
-[/docs/gettingstarted](https://substation.glitch.me/docs/gettingstarted) route in your 
-Substation DIY app.
-
 Updating
 --------
-As long as you've used the .config/ folder for all customizations, as covered in the Getting
+As long as you've used the config/ folder for all customizations, as covered in the Getting
 Started docs, you can easily update to the latest version of Substation on Glitch. Just click
 the "Tools ^" button in the lower left corner of the Glitch editor, now select "Git, Import,
 and Export", then "Import from Github", and use the repo "substation-me/substation-diy" when
@@ -94,7 +125,7 @@ LOL yeah it's real.
 
 Credits
 -------
-[@jessevondoom](https://twitter.com/jessevondoom), [@gmiddleb](https://github.com/gmiddleb)
+[@jessevondoom](https://twitter.com/jessevondoom), [@alanmoo](https://github.com/alanmoo), [@gmiddleb](https://github.com/gmiddleb)
 
 
 

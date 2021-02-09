@@ -12,7 +12,7 @@
   <meta property="og:description" content="An open-source app that lets you build subscriptions and newsletters.">
   <meta property="og:type" content="image/png">
   <meta property="og:url" content="https://substation.glitch.me/">
-  <meta property="og:image" content="https://lodge.substation.dev/assets/images/opengraph-substation.png">
+  <meta property="og:image" content="{{{substationURL}}}assets/images/opengraph-substation.png">
 
   <!-- generics -->
   <link rel="icon" href="https://www.substation.dev/assets/icons/favicon-32.png" sizes="32x32">
@@ -46,7 +46,6 @@
             Substation lets you make a club or newsletter using your own accounts on services like <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a> 
             and <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a>. It's free, open-source, and easy to set up.
           </p>
-          <h4>Read more</h4>
         </section>
         <div class="alt-section">
           <div class="split-content">
@@ -68,59 +67,43 @@
         </div>
 
         <section class="docs">
-          <h3>A few basics</h3>
+          <h3>First things first</h3>
           <p>
-            This is software. You'll have to edit a config file and some html, but it's nothing you 
-            can't handle.
+            Substation is free software. That means independence and control. You can make your community truly 
+            yours and customize things however you like. But you'll have to edit a config file and some html. There
+            is set-up. That might sound intimidating, but you can handle it. 
+          </p><p>
+            We're here to help. <a href="mailto:hi@substation.dev">Say hi</a>.
           </p>
-          <code class="embed">
-            &lt;!-- Substation embed code --&gt;
-            <br />
-            &lt;script src="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/lodge.js"&gt;&lt;/script&gt;<br />
-            &lt;embed class="lodge" src="{{substationURL}}embed"&gt;<br />
-          </code>
-          <p>[TK you can do this]</p>
           
           <div class="interstitial">
             <div class="annotated-link twitter">
               <a href="https://twitter.com/substationHQ"><img class="icon-service" src="/assets/images/icon-twitter.svg" alt="Twitter"></a>
               <div class="annotation">
                 <a href="https://twitter.com/substationHQ">
-                  <h4>Say hi!</h4>
+                  <h4>Twitter stuff</h4>
                   @substationHQ
                 </a>
               </div>
             </div>
           </div>
 
-          <h3>Getting started</h3>
+          <h3>Tell me more</h3>
           <p>
-            To get Substation DIY fully up and running you'll need a <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a> 
-            account to take payments, and a <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> account to send out mail. 
+            Your potential members first interact with the substation sign-up embed.
+            This can live on your site or on a simple page hosted by substation — or both. There's a dashboard you can use 
+            to email all members or export a CSV. It's all built on a simple API that handles email verification,
+            mailing campaigns, and recurring paments.
+          </p><p>
+            You can see the sign-up embed in the demo above. Here are a few pictures of the dashboard and email.
           </p>
-          <p>
-            Once you have your accounts at Braintree and Mailgun you just need to edit the <samp>.env</samp> file in your Glitch project.
-            Here it is, step-by-step:
-          </p>
-          <ol>
-            <li>
-              Add an admin email and set the title and main URL (your glitch URL)<br />
-              <code>ADMIN_EMAIL=hello@substation.me</code><br />
-              <code>TITLE=Substation</code><br />
-              <code>URL=https://substation.glitch.me/</code>
-            </li>
-            <li>
-              Set the security secret. This can be anything no one will guess. Mash the keyboard even!<br />
-              <code>SECURITY_SECRET=what3verYouwant!keepitSECRE7.</code>
-            </li>
-            <li>
-              Finally, you need to add information from Braintree and Mailgun. Both need API keys and 
-              secrets. Mailgun needs a 'FROM' email address, and Braintree needs you to set up a 
-              subscription and add its ID, set the environment as <samp>Sandbox</samp> or <samp>Production</samp>,
-              and give a minimum amount for your monthly membership fee.
-            </li>
-          </ol>
-
+          <div class="screenshots">
+            <img src="/assets/images/screenshot-1-login.png" alt="The login window, a simple form with just one input for your email address">
+            <img src="/assets/images/screenshot-2-email.png" alt="The login verification email sent to your inbox">
+            <img src="/assets/images/screenshot-3-dashboard.png" alt="The dashboard — an embed code, a CSV export, and an option to mail all members">
+            <img src="/assets/images/screenshot-4-compose.png" alt="Composing an email to all members">
+          </div>
+          
           <div class="interstitial">
             <div class="annotated-link glitch">
               <a href="https://glitch.com/edit/#!/substation"><img class="icon-service" src="/assets/images/icon-glitch.svg" alt="Glitch"></a>
@@ -133,28 +116,37 @@
             </div>
           </div>
 
-          <h3>
-            Customizing this page
-          </h3>
+          <h3>So how does it work?</h3>
           <p>
-            You can put the signup widget on any website, but if you want to customize
-            this one (or the email Substation sends) — well you can! Here's how:
+            Substation is just a few parts stitched together with a library we built called 
+            <a href="https://lodge.substation.dev/">Lodge</a>. For now you'll need accounts with <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a>
+            (payments) and <a href="https://www.mailgun.com/" taget="_blank">Mailgun</a> (bulk email) to get it all 
+            running. Neither will cost you anything but a little time to set up.
+          </p><p>
+            Lodge handles the embed, which can open a full-screen checkout overlay of whatever page it lives on, 
+            and it's as easy to embed as a YouTube video:
           </p>
-          <ol>
-            <li>Create a folder called <samp>/config</samp> at the top level of the app</li>
-            <li>For a custom homepage, create a file called <samp>/config/views/index.html</samp> — 
-                this will be shown instead of the default page</li>
-            <li>To add CSS create <samp>/config/public/custom.css</samp> — 
-              you can access this file as <a href="/customcss"><samp>/customcss</samp></a> from the domain root</li>
-            <li>You can also customize the email templates — 
-              <ul>
-                <li><samp>/config/views/email.html</samp> for the main email template</li>
-                <li><samp>/config/views/messages/login.html</samp>, unsubscribe.html, and welcome.html<br />
-                  <i>(For these we suggest starting with a copy of the default templates
-                  that are located in the main /views folder)</i></li>
-              </ul>
-            </li>
-          </ol>
+          
+          <code class="embed">
+            &lt;!-- Substation embed code --&gt;
+            <br />
+            &lt;script src="https://cdn.jsdelivr.net/gh/substationhq/lodge@0.9.1/dist/lodge.js"&gt;&lt;/script&gt;<br />
+            &lt;embed class="lodge" src="{{substationURL}}embed"&gt;<br />
+          </code>
+
+          <p>
+            So here's the weird thing. There's no database. We wanted to make substation as easy to use as possible,
+            so we designed around what we could do with the Braintree API and email authentication. So all customer
+            information is stored safely with the payment provider, and user authentication happens pretty much like 
+            every other site resets a password — except without a password. Just push a button in your inbox to 
+            login. 
+          </p><p> 
+            This means all of substation is configured and customized with a single <code>.env</code> file 
+            and a few markup/css files for customization — and more importantly it makes custom software a lot less
+            intimidating. Databases can cut you.
+          </p><p>
+            If you're still reading, then maybe you'd enjoy this <a href="https://github.com/substationHQ/substation-diy/blob/master/README.md">README</a>.
+          </p>
 
           <div class="interstitial">
             <div class="annotated-link github">
@@ -169,24 +161,19 @@
           </div>
 
           <h3>
-            Just a few more things.
+            What's next?
           </h3>
-          <ul>
-            <li>
-              The admin dashboard is located at <a href="/dashboard"><samp>/dashboard</samp></a> — login there to see
-              current subscriber stats, get your embed code, export a member list,
-              or send email.
-            </li>
-            <li>
-              Need more than one admin login? Yeah us too. Put a comma separated list between brackets like so:<br />
-              <code>ADMIN_EMAIL='["hello@substation.me", "hi@substation.me"]'</code>
-            </li>
-            <li>
-              Want a nicer looking FROM address for Mailgun? Use a long-format email address:<br />
-              <code>MAILGUN_FROM_EMAIL='Substation &lt;hello@substation.dev&gt;'</code>
-            </li>
-          </ul>
-        </section>
+          <p>
+            Right now we're exploring more payment options and services for Lodge. Up next the idea is to move substation
+            towards more of a serverless architecture, but carefully so it can work on services like Glitch and Vercel 
+            side by side. 
+          </p><p>
+            We're going to keep making substation easier and better, because we think it's important for people to have
+            more ways to connect and support each other directly.
+          </p><p>
+            <a href="mailto:hi@substation.dev">Email</a> or <a href="https://twitter.com/substationHQ">tweet</a> any questions.
+          </p>
+         </section>
     </main>
 <footer>
   <img class="slashes" src="/assets/images/slashes.svg" alt="///">

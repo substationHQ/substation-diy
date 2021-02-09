@@ -144,7 +144,7 @@ li li {
     color:#fff;
 }
 .docs {
-    padding: 4em 0;
+    padding: 8em 0;
     max-width: 42em;
     margin: 0 auto;
 }
@@ -199,6 +199,19 @@ code.embed {
     border-radius: 9px;
     background-color: #cff0ff;
   }
+  .screenshots {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .screenshots img {
+    outline: 1px solid #ffff00;
+    display: inline-block;
+    flex: 1;
+    max-width: 48%;
+    margin-bottom: 1.5em;
+  }
 
 /*** Footer, overprint slashes, corner slashes ***************/
 .slashes {
@@ -250,6 +263,9 @@ footer::before{
     .background-wrapper{
         background-size: auto 43em;
     }
+    .screenshots img {
+        max-width: 100%;
+      }
 }
 @media only screen and (max-width: 740px) {
     footer::before{
