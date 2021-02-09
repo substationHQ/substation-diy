@@ -90,7 +90,7 @@ li li {
     display: inline-block;
     background-repeat: no-repeat;
     height: 0.8em;
-    width: 0.8em;
+    width: 0.65em;
     position: relative;
     top: 0.125em;
 }
@@ -251,7 +251,8 @@ footer::before{
 /*** Media queries, mostly tweaks for mobile ***************/
 @media only screen and (max-device-width: 1024px) {
     h1{
-        font-size: 3.75em;
+        font-size: 3.5em;
+        white-space: nowrap;
     }
     .intro{
         padding-top: 1.5em;
@@ -259,6 +260,9 @@ footer::before{
     .intro h2 {
         font-size: 1.5em;
         margin-bottom: 2em;
+    }
+    .intro p {
+        font-size: 1.25em;
     }
     .background-wrapper{
         background-size: auto 43em;
