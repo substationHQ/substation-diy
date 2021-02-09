@@ -26,7 +26,7 @@ h1,h2,h3,h4,h5,h6{
     font-weight: 400;
 }
 h1{
-    font-size: 4.25em;
+    font-size: 5em;
     line-height: 1em;
     margin-bottom: 0;
 }
@@ -251,7 +251,7 @@ footer::before{
 /*** Media queries, mostly tweaks for mobile ***************/
 @media only screen and (max-device-width: 1024px) {
     h1{
-        font-size: 2.65em;
+        font-size: 3.75em;
     }
     .intro{
         padding-top: 1.5em;
